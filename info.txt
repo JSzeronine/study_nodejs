@@ -1,0 +1,64 @@
+npm ls -g --depth=0
+mkdir 폴더이름
+cd 폴더이름
+npm init
+
+npm outdated - 업데이트 가능 목록 조회
+npm update - 업데이트 전부
+npm update 패키지명 - 해당 모듈만 업데이트
+
+npm remove 모듈명 - 삭제
+npm search 모듈명
+npm info 모듈명
+npm ls 모듈명 - 경로 및 왜 설치 되었는지 체크
+
+npm adduser - 로그인
+npm whoami - 로그인 여부
+npm logout 
+
+npm version patch
+npm version minor
+npm version major
+
+- 베포
+( 24시간 안에 지워야한다. )
+npm publish
+npm unpublish 패키지명 --force
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+=======================
+
+npm i -g express-generator
+
+express 폴더명 --view=pug
+
+npm i
