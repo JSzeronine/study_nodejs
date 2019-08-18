@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "zeronine",
+    "password": "rksuddl12!@",
+    "database": "nodejs",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorAliases" : false
+  },
+  "test": {
+    "username": "root",
+    "password": "rksuddl12",
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorAliases" : false
+  },
+  "production": {
+    "username": "root",
+    "password": "rksuddl12",
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorAliases" : false
+  }
+}

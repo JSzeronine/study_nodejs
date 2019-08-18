@@ -27,38 +27,16 @@ npm unpublish 패키지명 --force
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-=======================
+========= Express =========
 
 npm i -g express-generator
-
-express 폴더명 --view=pug
-
+express 폴더명 --view=ejs
 npm i
+
+
+
+========= Database =========
+
+npm i sequelize mysql2
+npm i -g sequelize-cli
+sequelize init
