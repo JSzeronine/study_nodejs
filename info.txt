@@ -35,8 +35,35 @@ npm i
 
 
 
-========= Database =========
+========= Database sequelize =========
 
 npm i sequelize mysql2
-npm i -g sequelize-cli
-sequelize init
+npm i -g sequelize-cli      // 명령을 쓸 수 있다.
+sequelize init              // config폴더, models폴더, seeders폴더 migrations폴더 생성
+
+config.json                 // 설정 후,
+sequelize db:create         // 명령 실행
+
+
+
+========= nodebird study ========
+
+- Nodemon 설정 -
+npm i -D nodemon            // 개발할때만 쓰기 때문에 -D 에 설정해준다.
+package.json                // scripts -> "start" : "nodemon app"
+
+npm i express
+npm i cookie-parser
+npm i express-session
+npm i morgan
+npm i connect-flash pug
+
+npm i dotenv                // .env 파일 참고
+
+
+
+
+
+
+
+
