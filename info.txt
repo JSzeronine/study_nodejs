@@ -62,6 +62,14 @@ npm i dotenv                // .env 파일 참고
 
 
 
+========= 로그인 ========
+
+npm i passport              // 본체
+npm i passport-local        // 이메일 로그인
+npm i passport-kakao        // 카카오 로그인
+npm i bcrypt                // 비밀번호 암호화 해주는 패키지
+
+
 
 
 
