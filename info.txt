@@ -74,4 +74,11 @@ npm i bcrypt                // 비밀번호 암호화 해주는 패키지
 
 
 
+ID : 1462717921
+비밀번호 : rksuddl12!@
 
+사이트 : http://www.letskorail.com/
+
+
+출발 : 9월 12일
+도착 : 9월 14일
