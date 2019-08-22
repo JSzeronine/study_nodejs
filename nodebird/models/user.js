@@ -32,14 +32,3 @@ module.exports = (( sequelize, DataTypes ) => (
         paranoid : true,
     })
 ));
-
-module.exports = (( sequelize, DataTypes ) => (
-
-    sequelize.define( 'user', {
-
-    }, {
-        timestamps : true,
-        paranoid : true
-    })
-
-));
