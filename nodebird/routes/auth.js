@@ -38,10 +38,12 @@ router.post( '/join', isNotLoggedIn, async ( req, res, next ) => {
 
 // 로그인
 router.post( '/login', isNotLoggedIn, ( req, res, next ) => { // req.body.email, req.body.password
+    // passport/localStrategy.js 호출
     passport.authenticate( 'local', ( authError, user, info ) => {
 
+        console.log( "여긴가?", info );
+
         if( authError ){
-            console.log( authError );
             return next( authError );
         }
 
@@ -68,6 +70,17 @@ router.get( '/logout', isLoggedIn, ( req, res ) => {
     req.logout();
     req.session.destroy();
     res.redirect( '/' );
+});
+
+// passort//kakaoStrategy 
+// ( 1 )
+router.get( '/kakao', passport.authenticate( 'kakao' ));
+
+// ( 3 )
+router.get( '/kakao/callback', passport.authenticate( 'kakao', {
+    failureRedirect : '/'
+}), ( res, req ) => {
+    req.redirect( '/' );
 });
 
 module.exports = router;

@@ -77,3 +77,8 @@ ID : 1462717921
 
 출발 : 9월 12일
 도착 : 9월 14일
+
+======== 이미지 업로드 =======
+
+npm i multer
+<form enctype="multipart/form-data"> // 참고
