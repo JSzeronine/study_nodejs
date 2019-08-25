@@ -1,15 +1,17 @@
 
-
 const express = require( 'express' );
 const bcrypt = require( 'bcrypt' );
+const passport = require( 'passport' );
 const { User } = require( '../models' );
 
+const { isLoggedIn, isNotLoggedIn } = require( './middlewares' );
 const router = express.Router();
+
 // POST /auth/join
-router.post( '/join', ( req, res, next ) => {
+router.post( '/join', isNotLoggedIn, async ( req, res, next ) => {
     const { email, nick, password } = req.body;
     try{
-        const exUser = await User.find({ where : { email }});
+        const exUser = await User.findOne({ where : { email }});
 
         if( exUser ){
             req.flash( 'joinError', '이미 가입된 이메일입니다.' );
@@ -34,8 +36,38 @@ router.post( '/join', ( req, res, next ) => {
     }
 });
 
-router.post( '/login', ( req, res, next ) => {
+// 로그인
+router.post( '/login', isNotLoggedIn, ( req, res, next ) => { // req.body.email, req.body.password
+    passport.authenticate( 'local', ( authError, user, info ) => {
 
+        if( authError ){
+            console.log( authError );
+            return next( authError );
+        }
+
+        if( !user ){
+            req.flash( 'loginError', info.message ); 
+            return res.redirect( '/' );
+        }
+
+        // req.login ---> passport/index.js 에 passport.serializeUser 를 실행한다.
+        return req.login( user, ( loginError ) => { // 로그인이 성공하면 req.user 사용자 정보를 확인할 수 있다.
+            if( loginError ){
+                console.log( loginError );
+                return next( loginError );
+            }
+
+            return res.redirect( '/' );
+        });
+
+    })( req, res, next );
+});
+
+// 로그아웃
+router.get( '/logout', isLoggedIn, ( req, res ) => {
+    req.logout();
+    req.session.destroy();
+    res.redirect( '/' );
 });
 
 module.exports = router;

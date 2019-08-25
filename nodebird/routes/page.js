@@ -1,17 +1,18 @@
 const express = require( 'express' );
 const router = express.Router();
+const { isLoggedIn, isNotLoggedIn } = require( './middlewares' );
 
 
 // 프로필 페이지
-router.get( '/profile', ( req, res ) => {
+router.get( '/profile', isLoggedIn, ( req, res ) => {
     res.render( 'profile', { title : '내 정보 - NodeBird', user : null });
 });
 
 // 회원가입 페이지
-router.get( '/join', ( req, res ) => {
+router.get( '/join', isNotLoggedIn, ( req, res ) => {
     res.render( 'join', {
         title : '회원가입 - NodeBird',
-        user : null,
+        user : req.user,
         joinError : req.flash( 'joinError' )
     });
 })
@@ -21,7 +22,7 @@ router.get( '/', ( req, res, next ) => {
     res.render( 'main', {
         title : 'NodeBird',
         twits : [],
-        user : null,
+        user : req.user,
         loginError : req.flash( 'loginError' )
     });
 });
