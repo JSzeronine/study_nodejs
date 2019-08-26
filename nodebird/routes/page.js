@@ -6,7 +6,7 @@ const { User, Post } = require( '../models' );
 
 // 프로필 페이지
 router.get( '/profile', isLoggedIn, ( req, res ) => {
-    res.render( 'profile', { title : '내 정보 - NodeBird', user : null });
+    res.render( 'profile', { title : '내 정보 - NodeBird', user : req.user });
 });
 
 // 회원가입 페이지
