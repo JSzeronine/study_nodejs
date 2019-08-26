@@ -34,7 +34,6 @@ router.post( '/', isLoggedIn, upload2.none(), async ( req, res, next ) => {
     // 게시글 업로드
 
     try{
-
         const post = await Post.create({
             content : req.body.content,
             img : req.body.url,
