@@ -82,3 +82,29 @@ ID : 1462717921
 
 npm i multer
 <form enctype="multipart/form-data"> // 참고
+
+
+======== 공부할꺼 ========
+
+link : https://stackoverflow.com/questions/41666820/node-sequelize-mysql-how-to-define-collation-and-charset-to-models
+
+var sequelize = new Sequelize('database', 'username', 'password', {
+  define: {
+    charset: 'utf8',
+    collate: 'utf8_general_ci', 
+    timestamps: true
+  },
+  logging:false
+});
+
+sequelize.define('songs', {
+  name: DataTypes.STRING,
+  link: DataTypes.STRING,
+  artist: DataTypes.STRING,
+  lyrics: DataTypes.TEXT,
+  writer: DataTypes.STRING,
+  composer: DataTypes.STRING
+}, {
+  charset: 'utf8',
+  collate: 'utf8_unicode_ci'
+});
