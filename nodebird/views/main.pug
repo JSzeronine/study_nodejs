@@ -29,6 +29,10 @@ block content
           else if user && user.id !== twit.user.id && follow
             button.twit-unfollow 팔로우끊기
           .twit-content= twit.content
+          if user
+            button 좋아요
+          else if user
+            button 좋아요 취소
           if twit.img
             .twit-img
               img(src=twit.img alt='섬네일')

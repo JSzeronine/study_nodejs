@@ -22,12 +22,20 @@ router.get( '/join', isNotLoggedIn, ( req, res ) => {
 router.get( '/', ( req, res, next ) => {
 
     Post.findAll({
-        include : {
+        // 작성자
+        include : [{
             model : User,
             attributes : [ 'id', 'nick' ]
-        }
-    }).then(( posts ) => {
+        }, 
+        // 좋아요 누른 유저 가져오기
+        {
+            model : User,
+            attributes : [ 'id', 'nick' ],
+            through : 'Liker',
+        }],
 
+    }).then(( posts ) => {
+        console.log( posts );
         res.render( 'main', {
             title : 'NodeBird',
             twits : posts,
