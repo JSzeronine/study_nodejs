@@ -88,6 +88,28 @@ router.get( '/hashtag', async ( req, res, next ) => {
     }
 });
 
+router.post( '/:id/like', async ( req, res, next ) => {
+    try{
+        const user = await User.find({ where : { id : req.user.id }});
+        await user.addLike( req.param.id );
+        res.redirect( '/' );
+    }catch( error ){
+        console.error( error );
+        next( error );
+    }
+})
+
+router.delete( '/:id/like', async( req, res, next ) => {
+    try{
+        const user = await User.find({ where : { id : req.param.id }});
+        await user.removeLike( req.param.id );
+        res.redirect( '/' );
+    }catch( error ){
+        console.error( error );
+        next( error );
+    }
+})
+
 
 
 
