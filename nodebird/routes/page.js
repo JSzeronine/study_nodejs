@@ -26,16 +26,14 @@ router.get( '/', ( req, res, next ) => {
         include : [{
             model : User,
             attributes : [ 'id', 'nick' ]
-        }, 
+        }, {
         // 좋아요 누른 유저 가져오기
-        {
             model : User,
             attributes : [ 'id', 'nick' ],
-            through : 'Liker',
+            as : 'Liker',
         }],
 
     }).then(( posts ) => {
-        console.log( posts );
         res.render( 'main', {
             title : 'NodeBird',
             twits : posts,
