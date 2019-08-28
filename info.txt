@@ -84,6 +84,22 @@ npm i multer
 <form enctype="multipart/form-data"> // 참고
 
 
+======== 베포 ========
+npm i pm2
+npm i -g pm2
+pm2 list
+pm2 restart all // 서버 재시작
+pm2 monit // 서버 상태 확인
+pm2 kill // 서버 끄기
+pm2 start app.js
+
+
+
+
+
+
+
+
 ======== 공부할꺼 ========
 
 link : https://stackoverflow.com/questions/41666820/node-sequelize-mysql-how-to-define-collation-and-charset-to-models
