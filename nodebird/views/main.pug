@@ -37,6 +37,8 @@ block content
             button.like 좋아요
           else if user && like
             button.unlike 좋아요 취소
+          if user && user.id == twit.user.id
+            button.delete 게시글 삭제
 
   script.
     if (document.getElementById('img')) {
@@ -140,5 +142,30 @@ block content
             xhr.open('DELETE', '/post/' + twitId + '/like');
             xhr.send();
           }
+      });
+    });
+
+    document.querySelectorAll('.delete').forEach(function (tag) {
+      tag.addEventListener('click', function () {
+        var isLoggedIn = document.querySelector('#my-id');
+        var twitId = tag.parentNode.querySelector('.twit-id').value;
+        if (isLoggedIn) {
+          var userId = tag.parentNode.querySelector('.twit-user-id').value;
+          var myId = isLoggedIn.value;
+          if (userId === myId) {
+            if (confirm('게시글을 삭제하겠습니까?')) {
+              var xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                if (xhr.status === 200) {
+                  location.reload();
+                } else {
+                  console.error(xhr.responseText);
+                }
+              };
+              xhr.open('DELETE', '/post/' + twitId );
+              xhr.send();
+            }
+          }
+        }
       });
     });
