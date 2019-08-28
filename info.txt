@@ -2,6 +2,7 @@ npm ls -g --depth=0
 mkdir 폴더이름
 cd 폴더이름
 npm init
+npm i -g npm // npm update
 
 npm outdated - 업데이트 가능 목록 조회
 npm update - 업데이트 전부
@@ -70,13 +71,8 @@ npm i passport-kakao        // 카카오 로그인
 npm i bcrypt                // 비밀번호 암호화 해주는 패키지
 
 
-
 ID : 1462717921
 사이트 : http://www.letskorail.com/
-
-
-출발 : 9월 12일
-도착 : 9월 14일
 
 ======== 이미지 업로드 =======
 
@@ -84,16 +80,61 @@ npm i multer
 <form enctype="multipart/form-data"> // 참고
 
 
-======== 베포 ========
+======== 베포 준비 ========
+
+* package.json Setting *
+package.json
+"start": "cross-env NODE_ENV=production PORT=80 pm2 start app.js -i -1"
+
+npm i -g cross-env
+npm i cross-env
+
 npm i pm2
 npm i -g pm2
 pm2 list
 pm2 restart all // 서버 재시작
 pm2 monit // 서버 상태 확인
 pm2 kill // 서버 끄기
-pm2 start app.js
+pm2 start
+
+* 취약점 검사
+npm audit
+mpm audit fix
+
+[ winston ]
+
+npm i winston@next
+-> logger.js 생성 후 참고
+
+날짜별로 로그 저장
+npm i winston-daily-rotate-file
+
+[ 보안 ]
+
+npm i helmet hpp
+helmet    //  iframe 못쓸 경우 공식문서 확인해
+hpp       // hpp 공격 방어
+
+[ session 관리 ]
+npm i connect-redis   // 서버 재시작 해도 session 안날리기?
+https://redislabs.com/
 
 
+npm rm -g nvm // Node 버전 관리
+https://github.com/coreybutler/nvm-windows
+https://github.com/coreybutler/nvm-windows/releases
+nvm-setup.zip
+nvm list
+nvm install latest // 최신 버전
+nvm install 10.1.0 // 특정 버전
+
+node -v
+nvm use 10.9.0
+node -v
+nvm 10.5.0
+
+
+======== //베포 준비 ========
 
 
 
