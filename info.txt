@@ -100,6 +100,8 @@ pm2 start app.js
 
 
 
+
+
 ======== 공부할꺼 ========
 
 link : https://stackoverflow.com/questions/41666820/node-sequelize-mysql-how-to-define-collation-and-charset-to-models
