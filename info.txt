@@ -62,7 +62,6 @@ npm i connect-flash pug
 npm i dotenv                // .env 파일 참고
 
 
-
 ========= 로그인 ========
 
 npm i passport              // 본체
@@ -118,6 +117,7 @@ hpp       // hpp 공격 방어
 [ session 관리 ]
 npm i connect-redis   // 서버 재시작 해도 session 안날리기?
 https://redislabs.com/
+* 4.0 부터 사용방법 틀려진듯( 꼭 체크 )
 
 
 npm rm -g nvm // Node 버전 관리
