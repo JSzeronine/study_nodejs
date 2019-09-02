@@ -10,34 +10,52 @@ const upload = multer({
     storage : multer.diskStorage({
 
         destination( req, file, cd ){
+            console.log( "=======2 : ", file );
             cd( null, 'uploads/' ); // cd : 콜백함수 -> error, 설정
         },
 
         filename( req, file, cd ){
+
             const ext = path.extname( file.originalname );
             cd( null, path.basename( file.originalname, ext ) + new Date().valueOf() + ext ) // 파일명 중복을 막기 위해 Date()를 이용한다.
         },
 
     }),
 
-    limit : { fileSize : 5 * 1024 * 1024 },
+    limits : { files : 10, fileSize : 5 * 1024 * 1024 },
 });
 
 // <form>-> <input type='file' id='img'>
-router.post( '/img', isLoggedIn, upload.single( 'img' ), ( req, res ) => {
-    console.log( req.file );
-    res.json({ url : `/img/${ req.file.filename }` });
-});
+// router.post( '/img', isLoggedIn, upload.single( 'img' ), ( req, res ) => {
+//     console.log( req.file );
+//     res.json({ url : `/img/${ req.file.filename }` });
+// });
 
-// 집에 가서 공부해
+
 // router.post( '/img', isLoggedIn, upload.array( 'img' ), ( req, res ) => {
 //     console.log( req.files );
 //     res.json({ url : `/img/${ req.file.filename }` });
 // });
 
+
+router.post( '/img', isLoggedIn, upload.array( 'img', 10 ), ( req, res ) =>{
+    console.log( req.files );
+
+    var i = 0;
+    var len = req.files.length;
+    res.json({ url : `/img/${ req.files[ 0 ].filename }`});
+
+    // for( i; i<len; i++ )
+    // {
+    //     res.json({ url : `/img/${ req.file.filename }`});
+    // }
+})
+
 const upload2 = multer();
 router.post( '/', isLoggedIn, upload2.none(), async ( req, res, next ) => {
     // 게시글 업로드
+
+    console.log( req.body.url );
 
     try{
         const post = await Post.create({

@@ -45,7 +45,17 @@ block content
       document.getElementById('img').addEventListener('change', function (e) {
         var formData = new FormData();
         console.log(this, this.files);
-        formData.append('img', this.files[0]);
+
+        var i = 0;
+        var len = this.files.length;
+
+        for( i; i<len; i++ )
+        {
+          console.log( i );
+          console.log( i, this.files[i] );
+          formData.append('img', this.files[i]);
+        }
+        
         var xhr = new XMLHttpRequest();
         xhr.onload = function () {
           if (xhr.status === 200) {
