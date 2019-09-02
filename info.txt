@@ -128,6 +128,7 @@ nvm list
 nvm install latest // 최신 버전
 nvm install 10.1.0 // 특정 버전
 
+
 node -v
 nvm use 10.9.0
 node -v
