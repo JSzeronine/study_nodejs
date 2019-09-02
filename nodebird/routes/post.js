@@ -29,6 +29,12 @@ router.post( '/img', isLoggedIn, upload.single( 'img' ), ( req, res ) => {
     res.json({ url : `/img/${ req.file.filename }` });
 });
 
+// 집에 가서 공부해
+// router.post( '/img', isLoggedIn, upload.array( 'img' ), ( req, res ) => {
+//     console.log( req.files );
+//     res.json({ url : `/img/${ req.file.filename }` });
+// });
+
 const upload2 = multer();
 router.post( '/', isLoggedIn, upload2.none(), async ( req, res, next ) => {
     // 게시글 업로드
