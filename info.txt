@@ -75,6 +75,9 @@ ID : 1462717921
 
 ======== 이미지 업로드 =======
 
+여러장 올리기
+https://junspapa-itdev.tistory.com/27
+
 npm i multer
 <form enctype="multipart/form-data"> // 참고
 

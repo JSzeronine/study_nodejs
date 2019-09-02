@@ -12,7 +12,7 @@ block content
             input#img-url(type='hidden' name='url')
           div
             label#img-label(for='img') 사진 업로드
-            input#img(type='file' accept='image/*')
+            input#img(type='file' accept='image/*' multiple)
             button#twit-btn.btn(type='submit') 짹짹
     .twits
       form#hashtag-form(action='/post/hashtag')
