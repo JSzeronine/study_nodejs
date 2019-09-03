@@ -82,6 +82,8 @@ npm i multer
 <form enctype="multipart/form-data"> // 참고
 
 
+
+
 ======== 베포 준비 ========
 
 * package.json Setting *
