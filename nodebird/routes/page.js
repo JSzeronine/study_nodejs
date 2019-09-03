@@ -1,7 +1,7 @@
 const express = require( 'express' );
 const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require( './middlewares' );
-const { User, Post } = require( '../models' );
+const { User, Post, Image } = require( '../models' );
 
 
 // 프로필 페이지
@@ -31,9 +31,15 @@ router.get( '/', ( req, res, next ) => {
             model : User,
             attributes : [ 'id', 'nick' ],
             as : 'Liker',
+        }, {
+            model : Image,
+            attributes : [ "postId", "url" ]
         }],
 
     }).then(( posts ) => {
+
+        console.log( posts.content );
+
         res.render( 'main', {
             title : 'NodeBird',
             twits : posts,

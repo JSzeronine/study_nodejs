@@ -39,7 +39,11 @@ block content
             button.unlike 좋아요 취소
           if user && user.id == twit.user.id
             button.delete 게시글 삭제
-
+          if twit.images
+              each item in twit.images
+                .twit-img
+                  img(src=item.url alt='섬네일')
+          
   script.
     if (document.getElementById('img')) {
       document.getElementById('img').addEventListener('change', function (e) {
