@@ -8,8 +8,8 @@ block content
           .input-group
             textarea#twit(name='content' maxlength=140)
           .img-preview
-            img#img-preview(src='' style='display: none;' width='250' alt='미리보기')
-            input#img-url(type='hidden' name='url')
+            //- img#img-preview(src='' style='display: none;' width='250' alt='미리보기')
+            //- input#img-url(type='hidden' name='url')
           div
             label#img-label(for='img') 사진 업로드
             input#img(type='file' accept='image/*' multiple)
@@ -44,25 +44,37 @@ block content
     if (document.getElementById('img')) {
       document.getElementById('img').addEventListener('change', function (e) {
         var formData = new FormData();
-        console.log(this, this.files);
 
         var i = 0;
         var len = this.files.length;
 
         for( i; i<len; i++ )
         {
-          console.log( i );
-          console.log( i, this.files[i] );
-          formData.append('img', this.files[i]);
+          formData.append( 'img', this.files[ i ]);
         }
-        
+
         var xhr = new XMLHttpRequest();
         xhr.onload = function () {
           if (xhr.status === 200) {
             var url = JSON.parse(xhr.responseText).url;
-            document.getElementById('img-url').value = url;
-            document.getElementById('img-preview').src = url;
-            document.getElementById('img-preview').style.display = 'inline';
+
+            var i = 0;
+            var len = url.length;
+
+            for( i; i<len; i++ )
+            {
+              var tag = '';
+              tag += '<img id="img-preview" src="' + url[ i ] + '" style="display: inline;" width="250" alt="미리보기">';
+              tag += '<input id="img-url" value="' + url[ i ] + '" type="hidden" name="url">';
+
+              $( ".img-preview" ).append( tag );
+            }
+
+            return;
+
+            //- document.getElementById('img-url').value = url;
+            //- document.getElementById('img-preview').src = url;
+            //- document.getElementById('img-preview').style.display = 'inline';
           } else {
             console.error(xhr.responseText);
           }
