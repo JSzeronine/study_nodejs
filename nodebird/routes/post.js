@@ -2,7 +2,7 @@ const express = require( 'express' );
 const multer = require( 'multer' );
 const router = express.Router();
 const path = require( 'path' );
-const { Post, Hashtag, User } = require( '../models' );
+const { Post, Hashtag, User, Image } = require( '../models' );
 const { isLoggedIn } = require( './middlewares' );
 
 // <form enctype="multipart/form-data"> // 참고
@@ -10,7 +10,6 @@ const upload = multer({
     storage : multer.diskStorage({
 
         destination( req, file, cd ){
-            console.log( "=======2 : ", file );
             cd( null, 'uploads/' ); // cd : 콜백함수 -> error, 설정
         },
 
@@ -32,35 +31,28 @@ const upload = multer({
 // });
 
 
-// router.post( '/img', isLoggedIn, upload.array( 'img' ), ( req, res ) => {
-//     console.log( req.files );
-//     res.json({ url : `/img/${ req.file.filename }` });
-// });
-
-
 router.post( '/img', isLoggedIn, upload.array( 'img', 10 ), ( req, res ) =>{
-    console.log( req.files );
 
     var i = 0;
     var len = req.files.length;
-    res.json({ url : `/img/${ req.files[ 0 ].filename }`});
 
-    // for( i; i<len; i++ )
-    // {
-    //     res.json({ url : `/img/${ req.file.filename }`});
-    // }
+    var filename = [];
+    for( i; i<len; i++ )
+    {
+        filename.push( `/img/${ req.files[ i ].filename }` );
+    }
+
+    res.json({ url : filename });
 })
 
 const upload2 = multer();
 router.post( '/', isLoggedIn, upload2.none(), async ( req, res, next ) => {
     // 게시글 업로드
 
-    console.log( req.body.url );
-
     try{
         const post = await Post.create({
             content : req.body.content,
-            img : req.body.url,
+            // img : req.body.url,
             userId : req.user.id
         });
 
@@ -76,6 +68,19 @@ router.post( '/', isLoggedIn, upload2.none(), async ( req, res, next ) => {
 
             await post.addHashtags( result.map( r => r[ 0 ]));
         }
+
+        console.log( post );
+
+        var i = 0;
+        var len = req.body.url;
+
+        req.body.url.map( img => {
+            console.log( img );
+            Image.create({
+                url : img,
+                postId : post.id
+            })
+        });
 
         res.redirect( '/' );
 

@@ -12,6 +12,7 @@ db.Sequelize = Sequelize;
 db.User = require('./user')(sequelize, Sequelize);
 db.Post = require('./post')(sequelize, Sequelize);
 db.Hashtag = require('./hashtag')(sequelize, Sequelize);
+db.Image = require( './image' )( sequelize, Sequelize );
 
 db.User.hasMany(db.Post);
 db.Post.belongsTo(db.User);
@@ -31,5 +32,7 @@ db.User.belongsToMany(db.User, {
 db.User.belongsToMany( db.Post, { through : 'Like' });
 db.Post.belongsToMany( db.User, { through : 'Like', as : 'Liker' });
 
+db.Post.hasMany( db.Image );
+db.Image.belongsTo( db.Post );
 
 module.exports = db;
