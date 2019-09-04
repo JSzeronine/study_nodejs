@@ -133,7 +133,6 @@ nvm list
 nvm install latest // 최신 버전
 nvm install 10.1.0 // 특정 버전
 
-
 node -v
 nvm use 10.9.0
 node -v
@@ -164,3 +163,10 @@ sequelize.define('songs', {
   charset: 'utf8',
   collate: 'utf8_unicode_ci'
 });
+
+
+
+
+
+========= express vue framework =========
+http://vuejs.kr/2017/02/05/express-with-vue/
