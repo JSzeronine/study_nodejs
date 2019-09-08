@@ -4,15 +4,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { sequelize } = require( './models' );
+const session = require( 'express-session' );
+const passport = require( 'passport' );
 
 const index = require( './routes/index' );
 const movies = require( './routes/movies' );
 const join = require( './routes/join' );
 const login = require( './routes/login' );
 
+const passportConfig = require( './passport' );
 
 const app = express();
 sequelize.sync();
+passportConfig( passport );
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use( '/', index );
 app.use( '/api/movies', movies );
 app.use( '/api/join', join );
@@ -33,6 +38,9 @@ app.use( '/api/login', login );
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+app.use( passport.initialize() );
+app.use( passport.session() );
 
 // error handler
 app.use(function(err, req, res, next) {
