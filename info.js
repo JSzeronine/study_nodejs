@@ -179,6 +179,17 @@ C:\Users\dev2057\AppData\Roaming\npm
 +-- rimraf@2.7.0
 `-- sequelize-cli@5.5.0
 
+--------------------------------------------
+
++-- cross-env@5.2.0
++-- express@4.17.1
++-- express-generator@4.16.1
++-- nodemon@1.19.1
++-- pm2@3.5.1
++-- sequelize-cli@5.5.0
+`-- vue-cli@2.9.6
+
+
 https://medium.com/witinweb/vue-cli-%EB%A1%9C-vue-js-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-browserify-webpack-22582202cd52
 http://vuejs.kr/vue/vue-cli/2018/01/27/vue-cli-3/
 https://jaeyeophan.github.io/2018/10/21/Vuetorials-1-vue-cli-3-0/
