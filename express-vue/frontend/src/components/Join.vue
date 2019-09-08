@@ -1,27 +1,6 @@
 
 <template>
     <div>
-        <!-- <form action="/api/join" method="post">
-            <div class="input-group">
-                <label for="join-email">
-                    이메일
-                </label>
-                <input id="#join-email" type="email" name="email">
-            </div>
-
-            <div class="input-group">
-                <label for="join-nick">닉네임</label>
-                <input id="join-nick" type="text" name="nick">
-            </div>
-
-            <div class="input-group">
-                <label for="join-password">비밀번호</label>
-                <input id="join-password" type="password" name="password">
-            </div>
-
-            <button id="join-btn" type="submit">회원가입</button>
-        </form> -->
-
         <div class="input-group">
             <label for="join-email">
                 이메일

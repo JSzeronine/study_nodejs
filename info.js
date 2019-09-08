@@ -142,6 +142,10 @@ nvm 10.5.0
 
 link : https://stackoverflow.com/questions/41666820/node-sequelize-mysql-how-to-define-collation-and-charset-to-models
 
+# sequelize db:migrate
+
+
+
 var sequelize = new Sequelize('database', 'username', 'password', {
   define: {
     charset: 'utf8',
