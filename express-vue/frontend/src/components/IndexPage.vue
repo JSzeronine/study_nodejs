@@ -1,21 +1,6 @@
 <template>
   <div class="index">
-    <div>
-      <label for="">이메일</label>
-      <input v-model="email" type="email">
-    </div>
-
-    <div>
-      <label for="">비밀번호</label>
-      <input v-model="password" type="password">
-    </div>
-
-    <div>
-      <a @click="showLogin" href="javascript:;">
-        로그인
-      </a>
-    </div>
-    
+    <router-link to="/login">로그인하기</router-link>
   </div>
 </template>
 
@@ -29,21 +14,12 @@ export default {
   },
 
   created () {
-    
-  },
 
-  methods: {
-    showLogin()
-    {
-      this.$http.post( '/api/login', {
-        params : {
-          email : this.email,
-          password : this.password
-        }
-      }).then(( result ) => {
-        console.log( result );
+    this.$http.get( "/api" )
+      .then(( result ) => {
+        console.log( "IndexPage : ", result );
       })
-    }
+
   },
 }
 

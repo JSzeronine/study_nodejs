@@ -28,9 +28,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use( session({
+  resave : false,
+  saveUninitialized : false,
+  secret : "sakldjfl",
+  cookie : {
+    httpOnly : true,
+    secure : false
+  }
+}));
 
-app.use( '/', index );
-app.use( '/api/movies', movies );
+app.use( passport.initialize() );
+app.use( passport.session() );
+
+app.use( '/api', index );
 app.use( '/api/join', join );
 app.use( '/api/login', login );
 
@@ -38,9 +49,6 @@ app.use( '/api/login', login );
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-app.use( passport.initialize() );
-app.use( passport.session() );
 
 // error handler
 app.use(function(err, req, res, next) {

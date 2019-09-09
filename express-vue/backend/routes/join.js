@@ -13,7 +13,13 @@ router.post( '/', async ( req, res, next ) => {
 
         if( exUser ){
             console.log( "회원가입 실패" );
-            res.redirect( '/' );
+
+            res.json({
+                success : false,
+                message : "Join Fail"
+            });
+
+            return;
         }
 
         const hash = await bcrypt.hash( password, 12 );

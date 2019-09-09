@@ -50,6 +50,8 @@ export default {
 
                     if( result.data.success ){
                         this.$router.push( "/" );
+                    }else{
+                        alert( "이미 아이디가 존재 합니다." );
                     }
 
                });

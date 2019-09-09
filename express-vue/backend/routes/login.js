@@ -7,28 +7,34 @@ const passport = require( 'passport' );
 router.post( '/', ( req, res, next ) => {
     var { email, password } = req.body.params;
 
-    console.log( "일단 여기까진 오는데.." );
-    console.log( passport );
+    req.body.username = email;
+    req.body.password = password;
 
     passport.authenticate( 'local', ( authError, user, info ) => {
         if( authError ){
             return next( autoError );
         }
 
-        if( !user ){
-            console.log( "error" );
-        }
-
         return req.login( user, ( loginError ) => {
             if( loginError ){
                 console.error( loginError );
-                return next( loginError );
             }
 
             res.json({
                 success : true
             });
-        });
+        })
+
+        // return req.login( user, ( loginError ) => {
+        //     if( loginError ){
+        //         console.error( loginError );
+        //         return next( loginError );
+        //     }
+
+        //     res.json({
+        //         success : true
+        //     });
+        // });
     })( req, res, next );
 
 
