@@ -1,6 +1,5 @@
 <template>
     <v-card :style="{ marginBottom:'20px' }">
-        <v-image />
         <v-card-text>
             <div>
                 <h3>ZeroNine</h3>
