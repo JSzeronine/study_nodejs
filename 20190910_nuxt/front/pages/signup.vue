@@ -48,12 +48,41 @@ export default {
         }
     },
 
+    computed: {
+        me(){
+            return this.$store.state.users.me;
+        }
+    },
+
+    watch: {
+        me( value ){
+            if( value ){
+                this.$router.push({
+                    path : "/",
+                });
+            }
+        }
+    },
+
     methods: {
         onSubmitForm()
         {
-            console.log( this.$refs.form.validate() );
-            console.log( this.valid );
+            if( this.$refs.form.validate()){
+                this.$store.dispatch( "users/signUp", {
+                    nickname : this.nickname,
+                    email : this.email
+                })
+                .then(() => {
+                    this.$router.push({
+                        path : "/"
+                    });
+                }).catch(( error ) => {
+                    alert( "회원가입 실패" );
+                })
+            }
         }
     },
+
+    middleware : "anonymous"
 }
 </script>
