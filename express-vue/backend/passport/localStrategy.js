@@ -17,6 +17,7 @@ module.exports = ( passport ) => {
 
             if( exUser ){
                 
+                
                 const result = await bcrypt.compare( password, exUser.password );
 
                 if( result ){
