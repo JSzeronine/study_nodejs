@@ -18,10 +18,6 @@
                 </v-toolbar-items>
             </v-toolbar>
         </nav>
-
-        <div>{{ name }}</div>
-        <v-btn @click="onChangeName">바이바이</v-btn>
-
         <v-row no-gutters>
             <v-col cols="12" md="4">
                 <LoginForm />
@@ -35,6 +31,7 @@
 </template>
 
 <script>
+    // xs, sm, md, lg, xl
     import LoginForm from '~/components/LoginForm';
     export default {
         data() {
@@ -48,16 +45,9 @@
         },
 
         computed: {
-            name(){
-                return this.$store.state.posts.name;
-            }
         },
 
         methods: {
-            onChangeName()
-            {
-                this.$store.commit( 'posts/bye' );
-            }
         },
 
     }
