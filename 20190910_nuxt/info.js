@@ -7,3 +7,4 @@ npm i @nuxtjs/vuetify vuetify
 npm i @nuxtjs/axios axios
 
 
+
