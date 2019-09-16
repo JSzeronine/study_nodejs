@@ -11,3 +11,5 @@
 // fetch
 // watch
 
+// npm outdated
+// npm update
