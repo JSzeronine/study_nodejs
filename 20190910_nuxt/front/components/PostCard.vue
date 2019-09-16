@@ -1,10 +1,14 @@
 <template>
     <div>
         <v-card :style="{ marginBottom:'20px' }">
+            <v-card-title>
+                <h3>
+                    <nuxt-link :to="'/user/' + post.id">{{ post.User.nickname }}</nuxt-link>
+                </h3>   
+            </v-card-title>
             <v-card-text>
                 <div>
-                    <h3>{{ post.User.nickname }}</h3>
-                    <nuxt-link :to="'/post/' + post.id">{{ post.content }}</nuxt-link>
+                    <div>{{ post.content }}</div>
                 </div>
             </v-card-text>
 
@@ -93,6 +97,9 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-
+<style scoped>
+    a{
+        color : inherit;
+        text-decoration: none;
+    }
 </style>
