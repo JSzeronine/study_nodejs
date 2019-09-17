@@ -39,6 +39,16 @@
 // bcrypt 설치
 // npm i bcrypt
 
+// npm i passport
+// npm i passport-local
+// npm i express-session
+// npm i cookie-parser
+// npm i morgan
+
+
+
+
+
 
 // GET : 가져오다
 // POST : 생성하다
