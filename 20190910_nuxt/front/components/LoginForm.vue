@@ -54,10 +54,11 @@ export default {
 
     methods: {
         onSubmitForm(){
+            console.log( this.email );
             if( this.$refs.form.validate()){
                 this.$store.dispatch( "users/logIn", {
                     email : this.email,
-                    nickname : 'zeronine'
+                    password : this.password
                 })
             }
         },
