@@ -30,7 +30,14 @@
 // npm i -D nodemon
 // -> package.json : "dev" : "nodemon app.js"
 
+// npm i cors
 
+
+
+// 이거 설치하고
+// npm i -g --production windows-build-tools
+// bcrypt 설치
+// npm i bcrypt
 
 
 // GET : 가져오다
