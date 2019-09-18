@@ -16,7 +16,10 @@
                 />
 
                 <v-btn type="submit" color="green" absolute right>짹짹</v-btn>
-                <v-btn>이미지 업로드</v-btn>
+                <input ref="imageInput" type="file" multiple hidden @change="onChangeImages">
+
+                <!-- form안에 있는 버튼은 submit이 아닌 이상 type="button"를 넣어준다. -->
+                <v-btn @click="onClickImageUpload" type="button">이미지 업로드</v-btn>
             </v-form>   
         </v-container>
     </v-card>
@@ -70,7 +73,21 @@ export default {
 
                 });
             }
-        }
+        },
+
+        onClickImageUpload()
+        {
+            this.$refs.imageInput.click();
+        },
+
+        onChangeImages( $e ){
+            const imageFormData = new FormData();
+            [].forEach.call( $e.target.files, ( f ) => {
+                imageFormData.append( 'image', f );
+            });
+
+            this.$store.dispatch( 'posts/uploadImages', imageFormData );
+        },
     },
 }
 </script>

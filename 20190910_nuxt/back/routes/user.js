@@ -4,9 +4,10 @@ const passport = require( 'passport' );
 const db = require( '../models' );
 
 const router = express.Router();
+const { isLoggedIn, isNotLoggedIn } = require( './middlewares' );
 
 // 회원가입
-router.post( '/', async ( req, res, next ) => {
+router.post( '/', isNotLoggedIn, async ( req, res, next ) => {
 
     try{
         const exUser = await db.User.findOne({
@@ -43,7 +44,7 @@ router.post( '/', async ( req, res, next ) => {
 });
 
 // 로그인
-router.post( '/login', ( req, res, next ) => {
+router.post( '/login', isNotLoggedIn, ( req, res, next ) => {
 
     // done( 에러, 성공, 메세지 )
     passport.authenticate( 'local', ( err, user, info ) => {
@@ -72,7 +73,7 @@ router.post( '/login', ( req, res, next ) => {
 });
 
 // 로그아웃
-router.post( '/logout', ( req, res ) => {
+router.post( '/logout', isLoggedIn, ( req, res ) => {
     if( req.isAuthenticated() ){
         req.logout();
         req.session.destroy();

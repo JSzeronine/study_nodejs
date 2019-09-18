@@ -60,5 +60,15 @@ export const actions = {
         if( state.hasMorePost ){
             commit( "loadPosts" );
         }
+    },
+
+    uploadImages({ commit, state }, payload ){
+        this.$axios.post( 'http://localhost:3085/post/images', payload, {
+            withCredentials : true,
+        }).then(( result ) => {
+            console.log( "Image Upload -> ", result );
+        }).catch(( err ) => {
+
+        });
     }
 }
