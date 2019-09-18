@@ -59,13 +59,15 @@ export default {
                 this.$store.dispatch( "users/logIn", {
                     email : this.email,
                     password : this.password
-                })
+                });
             }
         },
 
         onLogOut()
         {
-            this.$store.dispatch( "users/logOut" );
+            this.$store.dispatch( "users/logOut" ).then(() => {
+                console.log( "로그아웃 완료" );
+            })
         }
     },
 
