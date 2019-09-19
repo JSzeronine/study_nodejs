@@ -69,6 +69,7 @@ router.post( '/login', isNotLoggedIn, ( req, res, next ) => {
             return res.json( user );
         });
 
+        
     })( req, res, next );
 });
 
