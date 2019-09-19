@@ -48,13 +48,13 @@ export default {
 
     computed : {
         me(){
+            console.log( this.$store.state.users.me )
             return this.$store.state.users.me;
         },
     },
 
     methods: {
         onSubmitForm(){
-            console.log( this.email );
             if( this.$refs.form.validate()){
                 this.$store.dispatch( "users/logIn", {
                     email : this.email,

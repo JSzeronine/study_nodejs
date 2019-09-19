@@ -1,15 +1,11 @@
 module.exports = {
     head : {
-        title : "NodeBird1"
+        title : "NodeBird"
     },
 
     modules : [
         '@nuxtjs/axios'
     ],
-
-    // devModules : [
-    //     '@nuxtjs/vuetify',
-    // ],
 
     buildModules : [
         '@nuxtjs/vuetify'
@@ -17,7 +13,12 @@ module.exports = {
 
     plugins : [],
     vuetify : {
-
         
+    },
+
+    axios : {
+        browserBaseURL : "http://localhost:3085",
+        baseURL : "http://localhost:3085",
+        https : false,
     }
 }
