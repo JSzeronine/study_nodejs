@@ -2,6 +2,7 @@
 export const state = () => ({
     mainPosts : [],
     hasMorePost : true,
+    imagePaths : [],
 });
 
 const totalPosts = 101;
@@ -10,6 +11,7 @@ const limit = 10;
 export const mutations = {
     addMainPost( state, payload ){
         state.mainPosts.unshift( payload );
+        state.imagePaths.length = 0;
     },
 
     removeMainPost( state, payload ){
@@ -38,13 +40,34 @@ export const mutations = {
 
         state.mainPosts = state.mainPosts.concat( fakePosts );
         state.hasMorePost = fakePosts.length === limit;
+    },
+
+    concatImagePaths( state, payload ){
+        state.imagePaths = state.imagePaths.concat( payload );
+    },
+
+    removeImagePath( state, payload ){
+        // payload -> index 값 보내자
+        console.log( payload );
+        state.imagePaths.splice( payload, 1 );
     }
 };
 
 export const actions = {
-    add({ commit }, payload ){
+    add({ commit, state }, payload ){
         // 서버에 게시글 등록 요청 보냄
-        commit( "addMainPost", payload );
+        this.$axios.post( 'http://localhost:3085/post', {
+            content : payload.content,
+            imagePaths : state.imagePaths
+        }, {
+            withCredentials : true,
+        }).then(( result ) => {
+            commit( 'addMainPost', result.data );
+        }).catch(( error ) => {
+            console.error( error );
+        });
+
+        // commit( "addMainPost", payload );
     },
 
     remove({ commit }, payload ){
@@ -67,6 +90,7 @@ export const actions = {
             withCredentials : true,
         }).then(( result ) => {
             console.log( "Image Upload -> ", result );
+            commit( "concatImagePaths", result.data );
         }).catch(( err ) => {
 
         });
