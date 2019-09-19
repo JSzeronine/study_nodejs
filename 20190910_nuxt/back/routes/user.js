@@ -6,6 +6,11 @@ const db = require( '../models' );
 const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require( './middlewares' );
 
+router.get( "/", isLoggedIn, async ( req, res, next ) => {
+    const user = req.user;
+    res.json( user );
+})
+
 // 회원가입
 router.post( '/', isNotLoggedIn, async ( req, res, next ) => {
 

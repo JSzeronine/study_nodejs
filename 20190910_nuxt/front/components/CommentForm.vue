@@ -53,12 +53,8 @@ export default {
         onSubmitForm(){
             if( this.$refs ){
                 this.$store.dispatch( "posts/addComments", {
-                    id : Date.now(),
                     postId : this.postId,
                     content : this.content,
-                    User : {
-                        nickname : this.me.nickname
-                    },
                 }).then( () => {
                     this.content = "";
                     this.success = true;

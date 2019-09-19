@@ -11,29 +11,29 @@ const totalFollowings = 6;
 const limit = 3;
 
 export const mutations = {
-    setMe( state, payload ){
-        state.me = payload;
+    setMe( state, payLoad ){
+        state.me = payLoad;
     },
 
-    changeNickname( state, payload ){
-        state.me.nickname = payload.nickname;
+    changeNickname( state, payLoad ){
+        state.me.nickname = payLoad.nickname;
     },
 
-    addFollower( state, payload ){
-        state.followerList.push( payload );
+    addFollower( state, payLoad ){
+        state.followerList.push( payLoad );
     },
 
-    removeFollower( state, payload ){
-        const index = state.followerList.findIndex(( v ) => v.id === payload.id );
+    removeFollower( state, payLoad ){
+        const index = state.followerList.findIndex(( v ) => v.id === payLoad.id );
         state.followerList.splice( index, 1 );
     },
 
-    addFollowing( state, payload ){
-        state.followingList.push( payload );
+    addFollowing( state, payLoad ){
+        state.followingList.push( payLoad );
     },
 
-    removeFollowing( state, payload ){
-        const index = state.followingList.findIndex(( v ) => v.id === payload.id );
+    removeFollowing( state, payLoad ){
+        const index = state.followingList.findIndex(( v ) => v.id === payLoad.id );
         state.followingList.splice( index, 1 );
     },
 
@@ -61,27 +61,38 @@ export const mutations = {
 };
 
 export const actions = {
-    signUp({ commit }, payload ){
+    loadUser({ commit }){
+        this.$axios.get( "/user", {
+            withCredentials : true
+        }).then(( result ) => {
+            console.log( "자동 로그인 -------> ", result.data );
+            commit( 'setMe', result.data );
+        }).catch(() => {
+
+        });
+    },
+
+    signUp({ commit }, payLoad ){
 
         // 서버에 회원가입 요청을 보내는 부분
-        this.$axios.post( 'http://localhost:3085/user', {
-            email : payload.email,
-            nickname : payload.nickname,
-            password : payload.password
+        this.$axios.post( '/user', {
+            email : payLoad.email,
+            nickname : payLoad.nickname,
+            password : payLoad.password
         }, {
             withCredentials : true, // 다른 서버간에 쿠키 심어줄때
         }).then(( result ) => {
             console.log( "회원가입 ------> ", result );
-            commit( "setMe", payload );
+            commit( "setMe", payLoad );
         }).catch(( err ) => {
             console.error( err );
         })
     },
 
-    logIn( { commit }, payload ){
-        this.$axios.post( 'http://localhost:3085/user/login', {
-            email : payload.email,
-            password : payload.password
+    logIn( { commit }, payLoad ){
+        this.$axios.post( '/user/login', {
+            email : payLoad.email,
+            password : payLoad.password
         }, {
             withCredentials : true, // 다른 서버간에 쿠키 심어줄때
         }).then(( result ) => {
@@ -92,10 +103,10 @@ export const actions = {
         })
     },
 
-    logOut( { commit }, payload ){
+    logOut( { commit }, payLoad ){
 
         return new Promise(( resolve, reject ) => {
-            this.$axios.post( 'http://localhost:3085/user/logout', {
+            this.$axios.post( '/user/logout', {
 
             }, { 
                 withCredentials : true, // 다른 서버간에 쿠키 심어줄때 
@@ -106,7 +117,6 @@ export const actions = {
                 resolve();
     
             }).catch(( err ) => {
-    
                 console.error( err );
     
             })
@@ -114,37 +124,37 @@ export const actions = {
 
     },
 
-    changeNickname({ commit }, payload )
+    changeNickname({ commit }, payLoad )
     {
-        commit( "changeNickname", payload );
+        commit( "changeNickname", payLoad );
     },
 
-    addFollowing({ commit }, payload ){
-        commit( "addFollowing", payload );
+    addFollowing({ commit }, payLoad ){
+        commit( "addFollowing", payLoad );
     },
 
-    addFollower({ commit }, payload )
+    addFollower({ commit }, payLoad )
     {
-        commit( "addFollower", payload );
+        commit( "addFollower", payLoad );
     },
 
-    removeFollowing({ commit }, payload )
+    removeFollowing({ commit }, payLoad )
     {
-        commit( "removeFollowing", payload );
+        commit( "removeFollowing", payLoad );
     },
 
-    removeFollower({ commit }, payload )
+    removeFollower({ commit }, payLoad )
     {
-        commit( "removeFollower", payload );
+        commit( "removeFollower", payLoad );
     },
 
-    loadFollowers({ commit, state }, payload ){
+    loadFollowers({ commit, state }, payLoad ){
         if( state.hasMoreFollower ){
             commit( "loadFollowers" );
         }
     },
 
-    loadFollowings({ commit, state }, payload ){
+    loadFollowings({ commit, state }, payLoad ){
         if( state.hasMoreFollowing ){
             commit( "loadFollowings" )
         }

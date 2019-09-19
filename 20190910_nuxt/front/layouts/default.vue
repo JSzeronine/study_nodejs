@@ -54,6 +54,7 @@
         },
 
         computed: {
+            
         },
 
         methods: {
@@ -64,7 +65,7 @@
 
                 this.hashtag = '';
             }
-        },
+        }
     }
 </script>
 
