@@ -85,18 +85,18 @@ export const actions = {
         }).then(( result ) => {
             commit( "loadComments", result.data );
         }).catch(() => {
-
+            
         })
     },
 
     loadPosts({ commit, state }, payLoad ){
-
         if( state.hasMorePost ){
             this.$axios.get( `/posts?offset=${state.mainPosts.length}&limit=10` )
                 .then(( result ) => {
                     commit( "loadPosts", result.data );
-                }).catch(() => {
-
+                }).catch(( error ) => {
+                    console.log( "포스트 가져오기 에러" );
+                    console.error( error );
                 });
         }
     },

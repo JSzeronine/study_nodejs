@@ -72,7 +72,7 @@ router.get( '/:id/comments', async ( req, res, next ) => {
         });
 
         if( !post ){
-            return res.status( 404 ).send( '포스트가 존재하지 않습니다.' );
+            return res.status( 404 ).send( '댓글이 존재하지 않습니다.' );
         };
 
         const comments = await db.Comment.findAll({
@@ -88,15 +88,12 @@ router.get( '/:id/comments', async ( req, res, next ) => {
         res.json( comments );
 
     }catch( error ){
-
         console.error( error );
         return next( error );
-
     }
 });
 
-router.post( '/:id/comment', isLoggedIn, async ( req, res, next ) => {
-
+router.post( '/:id/comment', async ( req, res, next ) => {
     try{
 
         const post = await db.Post.findOne({
