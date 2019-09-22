@@ -73,17 +73,6 @@ export const actions = {
         }
     },
 
-    // loadUser({ commit }){
-    //     this.$axios.get( "/user", {
-    //         withCredentials : true
-    //     }).then(( result ) => {
-    //         console.log( "자동 로그인 -------> ", result.data );
-    //         commit( 'setMe', result.data );
-    //     }).catch(() => {
-
-    //     });
-    // },
-
     signUp({ commit }, payLoad ){
 
         // 서버에 회원가입 요청을 보내는 부분

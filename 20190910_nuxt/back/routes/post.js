@@ -26,12 +26,27 @@ router.post( '/', isLoggedIn, async ( req, res ) => {
             await newPost.addHashtags( result.map( r => r[ 0 ] ));
         }
 
+        if( req.body.image ){
+            if( Array.isArray( req.body.image )){
+                await Promise.all( req.body.image.map(( image ) => {
+                    return db.Image.create({ src : image, PostId : newPost.id });
+                }));
+            }else{
+                await db.Image.create({ src : req.body.image, PostId : newPost.id });
+            }
+        }
+
         const fullPost = await db.Post.findOne({
             where : { id : newPost.id },
-            include : [{
-                model : db.User,
-                attributes : [ 'id', 'nickname' ]   // User 정보 중 id와 nickname 만 넣어주는걸로
-            }]
+            include : [
+                {
+                    model : db.User,
+                    attributes : [ 'id', 'nickname' ]   // User 정보 중 id와 nickname 만 넣어주는걸로
+                }, 
+                {
+                    model : db.Image,
+                }
+            ]
         })
 
         return res.json( fullPost );
@@ -95,7 +110,6 @@ router.get( '/:id/comments', async ( req, res, next ) => {
 
 router.post( '/:id/comment', async ( req, res, next ) => {
     try{
-
         const post = await db.Post.findOne({
             where : { id : req.params.id }
         });
@@ -128,12 +142,10 @@ router.post( '/:id/comment', async ( req, res, next ) => {
     }
 });
 
-
-
 router.delete( "/:id", async ( req, res, next ) => {
     try{
 
-        await db.Post.destory({
+        await db.Post.destroy({
             where : { id : req.params.id }
         });
 

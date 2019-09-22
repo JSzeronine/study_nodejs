@@ -8,48 +8,47 @@ const totalPosts = 101;
 const limit = 10;
 
 export const mutations = {
-    addMainPost( state, payLoad ){
-        state.mainPosts.unshift( payLoad );
+    addMainPost( state, payload ){
+        state.mainPosts.unshift( payload );
         state.imagePaths.length = 0;
     },
 
-    removeMainPost( state, payLoad ){
-        const index = state.mainPosts.findIndex(( v ) => v.id === payLoad.postId );
+    removeMainPost( state, payload ){
+        const index = state.mainPosts.findIndex(( v ) => v.id === payload.postId );
         state.mainPosts.splice( index, 1 );
     },
 
-    addComment( state, payLoad ){
-        const index = state.mainPosts.findIndex( v => v.id === payLoad.postId );
-        state.mainPosts[ index ].Comments.unshift( payLoad );
+    addComment( state, payload ){
+        const index = state.mainPosts.findIndex( v => v.id === payload.postId );
+        state.mainPosts[ index ].Comments.unshift( payload );
     },
 
-    loadComments( state, payLoad ){
-        const index = state.mainPosts.findIndex( v => v.id === payLoad.postId );
-        state.mainPosts[ index ].Comments = payLoad;
+    loadComments( state, payload ){
+        const index = state.mainPosts.findIndex( v => v.id === payload.postId );
+        state.mainPosts[ index ].Comments = payload;
     },
 
-    loadPosts( state, payLoad ){
-        state.mainPosts = state.mainPosts.concat( payLoad );
-        state.hasMorePost = payLoad.length === limit;
+    loadPosts( state, payload ){
+        state.mainPosts = state.mainPosts.concat( payload );
+        state.hasMorePost = payload.length === limit;
     },
 
-    concatImagePaths( state, payLoad ){
-        state.imagePaths = state.imagePaths.concat( payLoad );
+    concatImagePaths( state, payload ){
+        state.imagePaths = state.imagePaths.concat( payload );
     },
 
-    removeImagePath( state, payLoad ){
-        // payLoad -> index 값 보내자
-        console.log( payLoad );
-        state.imagePaths.splice( payLoad, 1 );
+    removeImagePath( state, payload ){
+        state.imagePaths.splice( payload, 1 );
     }
 };
 
 export const actions = {
-    add({ commit, state }, payLoad ){
+    add({ commit, state }, payload ){
         // 서버에 게시글 등록 요청 보냄
+
         this.$axios.post( '/post', {
-            content : payLoad.content,
-            imagePaths : state.imagePaths
+            content : payload.content,
+            image : state.imagePaths
         }, {
             withCredentials : true,
         }).then(( result ) => {
@@ -59,28 +58,32 @@ export const actions = {
         });
     },
 
-    remove({ commit }, payLoad ){
-        this.$axios.delete( `/post/${ payLoad.postId }`, {
+    remove({ commit }, payload ){
+        this.$axios.delete( `/post/${ payload.postId }`, {
             withCredentials : true,
         }).then(() => {
-            commit( "removeMainPost", payLoad );
+            commit( "removeMainPost", payload );
         }).catch(() => {
 
         });
     },
 
-    addComments({ commit }, payLoad ){
-        this.$axios.post( `/post/${payLoad.postId}/comment`, {
-            content : payLoad.content,
+    addComment({ commit }, payload ){
+        this.$axios.post( `/post/${payload.postId}/comment`, {
+            content : payload.content,
+        }, {
+            withCredentials : true
         }).then(( result ) => {
             commit( "addComment", result.data );
-        }).catch(() => {
+        }).catch(( error ) => {
 
         });
+
+        
     },
 
-    loadComments({ commit }, payLoad ){
-        this.$axios.get( `/post/${ payLoad.postId }/comments`, {
+    loadComments({ commit }, payload ){
+        this.$axios.get( `/post/${ payload.postId }/comments`, {
 
         }).then(( result ) => {
             commit( "loadComments", result.data );
@@ -89,7 +92,7 @@ export const actions = {
         })
     },
 
-    loadPosts({ commit, state }, payLoad ){
+    loadPosts({ commit, state }, payload ){
         if( state.hasMorePost ){
             this.$axios.get( `/posts?offset=${state.mainPosts.length}&limit=10` )
                 .then(( result ) => {
@@ -101,8 +104,8 @@ export const actions = {
         }
     },
 
-    uploadImages({ commit, state }, payLoad ){
-        this.$axios.post( '/post/images', payLoad, {
+    uploadImages({ commit, state }, payload ){
+        this.$axios.post( '/post/images', payload, {
             withCredentials : true,
         }).then(( result ) => {
             console.log( "Image Upload -> ", result );
