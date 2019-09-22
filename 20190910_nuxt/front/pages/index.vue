@@ -33,11 +33,7 @@ export default {
     },
 
     fetch({ store }){
-        return store.dispatch( "posts/loadPosts" );
-    },
-
-    created() {
-        
+        return store.dispatch( "posts/loadPosts", { reset : true });
     },
 
     mounted() {

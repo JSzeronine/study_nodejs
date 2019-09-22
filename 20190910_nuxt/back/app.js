@@ -11,6 +11,7 @@ const morgan = require( 'morgan' );
 
 const userRouter = require( './routes/user' );
 const postRouter = require( './routes/post' );
+const postsRouter = require( './routes/posts' );
 
 db.sequelize.sync({ 
     // force : true // 매번 데이터 날린다. 
@@ -45,6 +46,7 @@ app.get( '/', ( req, res ) => {
 
 app.use( '/user', userRouter );
 app.use( '/post', postRouter );
+app.use( '/posts', postsRouter );
 
 app.listen( 3085, () => {
     console.log( `백엔드 서버 ${ 3085 }번 포트에서 작동중.` );

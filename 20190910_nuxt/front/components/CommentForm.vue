@@ -52,7 +52,7 @@ export default {
 
         onSubmitForm(){
             if( this.$refs ){
-                this.$store.dispatch( "posts/addComments", {
+                this.$store.dispatch( "posts/addComment", {
                     postId : this.postId,
                     content : this.content,
                 }).then( () => {
@@ -62,7 +62,7 @@ export default {
                     this.hideDetails = false;
 
                 }).catch(( error ) => {
-
+                    console.error( error );
                 })
             }
         }

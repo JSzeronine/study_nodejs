@@ -1,6 +1,7 @@
 <template>
     <div>
         <v-card :style="{ marginBottom:'20px' }">
+            <post-images :images="post.Images || []" />
             <v-card-title>
                 <h3>
                     <nuxt-link :to="'/user/' + post.id">{{ post.User.nickname }}</nuxt-link>
@@ -57,10 +58,12 @@
 
 <script>
 import CommentForm from "~/components/CommentForm";
+import PostImages from "~/components/PostImages";
 export default {
     
     components : {
         CommentForm,
+        PostImages
     },
 
     data() {
@@ -92,7 +95,7 @@ export default {
         {
             this.$store.dispatch( "posts/remove", {
                 postId : this.post.id,
-            })
+            });
         },
 
         onEditPost()
