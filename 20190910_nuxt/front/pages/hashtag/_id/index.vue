@@ -31,7 +31,7 @@ export default {
     },
 
     fetch({ store }){
-        store.dispatch( "posts/loadPosts" );
+        return store.dispatch( "posts/loadPosts" );
     },
 
     created() {

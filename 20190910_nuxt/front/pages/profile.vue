@@ -111,7 +111,7 @@ export default {
 
     fetch({ store }){
         store.dispatch( "users/loadFollowers" );
-        store.dispatch( "users/loadFollowings" );
+        return store.dispatch( "users/loadFollowings" );
     }
 }
 

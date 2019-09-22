@@ -42,6 +42,7 @@ router.post( '/', isNotLoggedIn, async ( req, res, next ) => {
         // HTTP  STATUS CODE 검색해봐.
         return res.status( 201 ).json( newUser );
 
+        
     }catch( error ){
         console.error( error );
         return next( error );

@@ -61,16 +61,28 @@ export const mutations = {
 };
 
 export const actions = {
-    loadUser({ commit }){
-        this.$axios.get( "/user", {
-            withCredentials : true
-        }).then(( result ) => {
-            console.log( "자동 로그인 -------> ", result.data );
-            commit( 'setMe', result.data );
-        }).catch(() => {
 
-        });
+    async loadUser({ commit }){
+        try{
+            const result = await this.$axios.get( "/user", { withCredentials : true });
+            commit( "setMe", result.data );
+
+        }catch( error ){
+            console.log( "유저 없음." );
+            // console.error( error );
+        }
     },
+
+    // loadUser({ commit }){
+    //     this.$axios.get( "/user", {
+    //         withCredentials : true
+    //     }).then(( result ) => {
+    //         console.log( "자동 로그인 -------> ", result.data );
+    //         commit( 'setMe', result.data );
+    //     }).catch(() => {
+
+    //     });
+    // },
 
     signUp({ commit }, payLoad ){
 
