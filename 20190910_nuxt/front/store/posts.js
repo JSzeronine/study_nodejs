@@ -26,12 +26,8 @@ export const mutations = {
     },
 
     loadComments( state, payload ){
-        const index = state.mainPosts.findIndex( v => v.id === payload.PostId );
-
-        console.log( state.mainPosts, payload.PostId );
-        // state.mainPosts[ index ].Comments = payload;
-        // Vue.set( state.mainPosts[ index ], 'Comments', payload.data );
-        // Vue.set( state.mainPosts[ index ], 'Comments', payload.data );
+        const index = state.mainPosts.findIndex( v => v.id === payload.postId );
+        state.mainPosts[ index ].Comments.unshift( payload );
     },
 
     loadPosts( state, payload ){
@@ -89,14 +85,15 @@ export const actions = {
     },
 
     loadComments({ commit }, payload ){
-        this.$axios.get( `/post/${ payload.postId }/comments`, {
-
-        }).then(( result ) => {
-            console.log( result.data );
-            commit( "loadComments", result.data );
-        }).catch(() => {
+        this.$axios.get( `/post/${ payload.postId }/comments` )
+            .then(( result ) => {
+                commit( "loadComments", {
+                    postId : payload.postId,
+                    data : result.data 
+                });
+            }).catch(() => {
             
-        })
+            })
     },
 
     loadPosts({ commit, state }, payload ){
