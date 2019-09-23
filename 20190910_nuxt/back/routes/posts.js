@@ -6,7 +6,6 @@ const router = express.Router();
 router.get( "/", async ( req, res, next ) => {      //req.query -> /posts?offset=10&limit=10
 
     try{
-        console.log( db.Image );
         const posts = await db.Post.findAll({
             include : [{
                 model : db.User,
@@ -16,11 +15,11 @@ router.get( "/", async ( req, res, next ) => {      //req.query -> /posts?offset
             }],
 
             order : [[ "createdAt", "DESC" ]],
-            offset : parseInt( req.query.offset, 10 ) || 10,
-            limit : parseInt( req.query.limit, 10 ) || 10,
+            // offset : parseInt( req.query.offset, 10 ) || 10,
+            // limit : parseInt( req.query.limit, 10 ) || 10,
         });
 
-        res.json( posts );
+        return res.json( posts );
 
     }catch( error ){
         console.error( error );

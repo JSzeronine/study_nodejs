@@ -83,7 +83,7 @@ router.get( '/:id/comments', async ( req, res, next ) => {
 
     try{
         const post = await db.Comment.findOne({
-            where : { id : req.params.id }
+            where : { PostId : req.params.id }
         });
 
         if( !post ){

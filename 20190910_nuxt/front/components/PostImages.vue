@@ -4,7 +4,7 @@
     <div v-if="images.length === 0"></div>
     <div v-else-if="images.length === 1">
         <v-img 
-            :src="`http://localhost:3085${ images[ 0 ].src }`" 
+            :src="`http://localhost:3085/${ images[ 0 ].src }`" 
             contain
             @click="zoomImages"
         />
