@@ -13,6 +13,12 @@ import PostForm from '~/components/PostForm';
 
 export default {
 
+    data() {
+        return {
+            
+        }
+    },
+
     components : {
         PostCard,
         PostForm
@@ -33,11 +39,12 @@ export default {
     },
 
     fetch({ store }){
-        return store.dispatch( "posts/loadPosts", { reset : true });
+        return store.dispatch( "posts/loadPosts" );
     },
 
     mounted() {
         window.addEventListener( "scroll", this.onScroll );
+        this.onScroll( null );
     },
 
     beforeDestroy() {
