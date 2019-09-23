@@ -2,6 +2,7 @@
 
 
 
+
 // -------- frontend ---------
 // npm i vue nuxt
 // npm i @nuxtjs/vuetify vuetify 
