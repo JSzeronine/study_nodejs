@@ -1,4 +1,3 @@
-import Vue from 'vue';
 
 export const state = () => ({
     mainPosts : [],
@@ -41,7 +40,20 @@ export const mutations = {
 
     removeImagePath( state, payload ){
         state.imagePaths.splice( payload, 1 );
-    }
+    },
+
+    unlikePost( state, payload ){
+        const index = state.mainPosts.findIndex( v => v.id === payload.postId );
+        const userIndex = state.mainPosts[ index ].Likers.findIndex( v => v.id === payload.userId );
+        state.mainPosts[ index ].splice( userIndex, 1 );
+    },
+
+    likePost( state, payload ){
+        const index = state.mainPosts.findIndex( v => v.id === payload.postId );
+        state.mainPosts[ index ].Likers.push({
+            id : payload.userId
+        });
+    },
 };
 
 export const actions = {
@@ -117,5 +129,41 @@ export const actions = {
         }).catch(( err ) => {
 
         });
-    }
+    },
+
+    retweet({ commit }, payload ){
+        this.$axios.post( `/post/${ payload.postId }/retweet`, {}, {
+            withCredentials : true,
+        }).then(( result ) => {
+            commit( "addMainPost", result.data );
+        }).catch(( error ) => {
+            console.error( error );
+        })
+    },
+
+    likePost({ commit }, payload ){
+        this.$axios.post( `/post/${ payload.postId }/like`, {}, {
+            withCredentials : true,
+        }).then(( result ) => {
+            commit( "likePost", {
+                userId : result.data.userId,
+                postId : payload.postId
+            });
+        }).catch(( error ) => {
+            console.error( error );
+        })
+    },
+
+    unlikePost({ commit }, payload ){
+        this.$axios.post( `/post/${ payload.postId }/unlike`, {
+            withCredentials : true,
+        }).then(( result ) => {
+            commit( "unlikePost", {
+                userId : result.data.userId,
+                postId : payload.postId
+            });
+        }).catch(( error ) => {
+            console.error( error );
+        });
+    },
 }
