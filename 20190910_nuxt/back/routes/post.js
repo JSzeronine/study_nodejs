@@ -158,7 +158,7 @@ router.delete( "/:id", async ( req, res, next ) => {
     }
 })
 
-router.post( ":id/retweet", isLoggedIn, async ( req, res, next ) => {
+router.post( "/:id/retweet", isLoggedIn, async ( req, res, next ) => {
 
     try{
         const post = await db.Post.findOne({
@@ -178,7 +178,7 @@ router.post( ":id/retweet", isLoggedIn, async ( req, res, next ) => {
         };
 
         // 원본, 원본이 없으면 일단 게시글
-        const retweetTargetId = post.RetweetID || post.id;
+        const retweetTargetId = post.RetweetId || post.id;
         const exPort = await db.Post.findOne({
             where : {
                 UserId : req.user.id,
@@ -244,7 +244,7 @@ router.post( "/:id/like", isLoggedIn, async ( req, res, next ) => {
     }
 })
 
-router.delete( "/:id/like", isLoggedIn, async ( req, res, next ) => {
+router.delete( "/:id/unlike", isLoggedIn, async ( req, res, next ) => {
 
     try{
         const post = await db.Post.findOne({ where : { id : req.params.id }});

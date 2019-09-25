@@ -14,7 +14,7 @@
             </v-card-text>
 
             <v-card-actions>
-                <v-btn text color="orange">
+                <v-btn text color="orange" @click="onRetweet">
                     <v-icon>mdi-twitter-retweet</v-icon>
                 </v-btn>
                 <v-btn text color="orange" @click="onClickHeart">
@@ -81,7 +81,7 @@ export default {
 
     computed: {
         me(){
-            return this.$store.state.user.me;
+            return this.$store.state.users.me;
         },
 
         liked(){
@@ -129,21 +129,19 @@ export default {
         },
 
         onClickHeart(){
-            console.log( "heart" );
-            console.log( this.me );
-            // if( !this.me ){
-            //     return alert( "로그인이 필요합니다." );
-            // }
+            if( !this.me ){
+                return alert( "로그인이 필요합니다." );
+            }
 
-            // if( this.liked ){
-            //     return this.$store.dispatch( "posts/unlikePost", {
-            //         postId : this.post.id
-            //     });
-            // }
+            if( this.liked ){
+                return this.$store.dispatch( "posts/unlikePost", {
+                    postId : this.post.id
+                });
+            }
 
-            // return this.$store.dispatch( "posts/likePost", {
-            //     postId : this.post.id
-            // });
+            return this.$store.dispatch( "posts/likePost", {
+                postId : this.post.id
+            });
         },
     },
 }

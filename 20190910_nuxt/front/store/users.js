@@ -12,6 +12,7 @@ const limit = 3;
 
 export const mutations = {
     setMe( state, payLoad ){
+        console.log( "setMe ------------> ", payLoad );
         state.me = payLoad;
     },
 

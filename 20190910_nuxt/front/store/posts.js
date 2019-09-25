@@ -45,7 +45,7 @@ export const mutations = {
     unlikePost( state, payload ){
         const index = state.mainPosts.findIndex( v => v.id === payload.postId );
         const userIndex = state.mainPosts[ index ].Likers.findIndex( v => v.id === payload.userId );
-        state.mainPosts[ index ].splice( userIndex, 1 );
+        state.mainPosts[ index ].Likers.splice( userIndex, 1 );
     },
 
     likePost( state, payload ){
@@ -138,6 +138,7 @@ export const actions = {
             commit( "addMainPost", result.data );
         }).catch(( error ) => {
             console.error( error );
+            alert( error.response.data );
         })
     },
 
@@ -155,7 +156,7 @@ export const actions = {
     },
 
     unlikePost({ commit }, payload ){
-        this.$axios.post( `/post/${ payload.postId }/unlike`, {
+        this.$axios.delete( `/post/${ payload.postId }/unlike`, {
             withCredentials : true,
         }).then(( result ) => {
             commit( "unlikePost", {
