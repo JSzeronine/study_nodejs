@@ -84,29 +84,29 @@ export const actions = {
         }, {
             withCredentials : true, // 다른 서버간에 쿠키 심어줄때
         }).then(( result ) => {
-            console.log( "회원가입 ------> ", result );
-            commit( "setMe", payLoad );
+            // commit( "setMe", payLoad );
         }).catch(( err ) => {
             console.error( err );
         })
     },
 
     logIn( { commit }, payLoad ){
-        this.$axios.post( '/user/login', {
-            email : payLoad.email,
-            password : payLoad.password
-        }, {
-            withCredentials : true, // 다른 서버간에 쿠키 심어줄때
-        }).then(( result ) => {
-            console.log( "로그인 ------->", result );
-            commit( "setMe", result.data );
-        }).catch(( err ) => {
-            console.error( err );
+        return new Promise(( resolve, reject ) => {
+            this.$axios.post( '/user/login', {
+                email : payLoad.email,
+                password : payLoad.password
+            }, {
+                withCredentials : true, // 다른 서버간에 쿠키 심어줄때
+            }).then(( result ) => {
+                commit( "setMe", result.data );
+                resolve();
+            }).catch(( err ) => {
+                console.error( err );
+            })
         })
     },
 
     logOut( { commit }, payLoad ){
-
         return new Promise(( resolve, reject ) => {
             this.$axios.post( '/user/logout', {
 

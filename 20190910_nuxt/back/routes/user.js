@@ -72,6 +72,12 @@ router.post( '/login', isNotLoggedIn, ( req, res, next ) => {
                 return next( err );
             }
 
+            return res.json({
+                email : user.email,
+                id : user.id,
+                nickname : user.nickname,
+            })
+
             return res.json( user );
         });
 
