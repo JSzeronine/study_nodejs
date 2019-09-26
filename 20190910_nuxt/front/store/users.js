@@ -34,8 +34,8 @@ export const mutations = {
     },
 
     removeFollowing( state, payLoad ){
-        const index = state.followingList.findIndex(( v ) => v.id === payLoad.id );
-        state.followingList.splice( index, 1 );
+        const index = state.me.Followings.findIndex(( v ) => v.id === payLoad.userid );
+        state.me.Followings.splice( index, 1 );
     },
 
     loadFollowings( state ){
@@ -58,7 +58,11 @@ export const mutations = {
 
         state.followerList = state.followerList.concat( fakeUsers );
         state.hasMoreFollower = fakeUsers.length === limit;
-    }
+    },
+
+    following( state, payLoad ){
+        state.me.Followings.push({ id : payLoad.userId });
+    },
 };
 
 export const actions = {
@@ -160,6 +164,33 @@ export const actions = {
         if( state.hasMoreFollowing ){
             commit( "loadFollowings" )
         }
+    },
+
+    follow({ commit, state }, payLoad ){
+        this.$axios.post( `/user/${ payLoad.userId }/follow`, {
+
+        }, {
+            withCredentials : true
+        }).then(( result ) => {
+            commit( "following", {
+                userId : payLoad.userId
+            });
+        }).catch(( error ) => {
+            console.error( error );
+        })
+    },
+
+    unfollow({ commit, state }, payLoad ){
+        // delete 는 두번째 데이터가 없다.( 넣으면 동작하지 않는다. )
+        this.$axios.delete( `/user/${ payLoad.userId }/follow`, {
+            withCredentials : true
+        }).then(( result ) => {
+            commit( "removeFollowing", {
+                userId : payLoad.userId
+            })
+        }).catch(( error ) => {
+            console.error( error );
+        })
     }
 };
 

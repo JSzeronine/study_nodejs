@@ -19,7 +19,6 @@ module.exports = ( sequelize, DataTypes ) => {
     }, {
         charset : "utf8",
         collate : 'utf8_general_ci',
-        
     });
 
     User.associate = ( db ) => {
@@ -32,3 +31,4 @@ module.exports = ( sequelize, DataTypes ) => {
 
     return User;
 }
+
