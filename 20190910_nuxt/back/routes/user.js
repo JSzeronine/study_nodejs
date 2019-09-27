@@ -162,7 +162,46 @@ router.patch( '/nickname', isLoggedIn, async ( req, res, next ) => {
         console.error( error );
         return next( error );
     }
+});
 
+router.get( '/:id/followings', isLoggedIn, async ( req, res, next ) => {
+    try{
+        const user = await db.User.findOne({
+            where : { id : req.user.id },
+        });
+
+        const followings = await user.getFollowings({
+            attributes : [ "id", "nickname" ],
+            limit : parseInt( req.query.limit || 3, 10 ),
+            offset : parseInt( req.query.offset || 0, 10 ),
+        });
+
+        res.json( followings );
+
+    }catch( err ){
+        console.error( err );
+        return next( err );
+    }
+});
+
+router.get( "/:id/followers", isLoggedIn, async ( req, res, next ) => {
+    try{
+        const user = await db.User.findOne({
+            where : { id : req.user.id },
+        });
+
+        const followers = await user.getFollowers({
+            attributes : [ "id", "nickname" ],
+            limit : parseInt( req.query.limit || 3, 10 ),
+            offset : parseInt( req.query.offset || 0, 10 )
+        });
+
+        res.json( followers );
+
+    }catch( error ){
+        console.error( error );
+        return next( error );
+    }
 })
 
 module.exports = router;
