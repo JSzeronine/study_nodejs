@@ -100,6 +100,8 @@ export default {
                 });
             }
 
+            console.log( this.post );
+
             this.commentOpend = !this.commentOpend;
         },
 

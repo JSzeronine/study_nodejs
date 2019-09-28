@@ -1,9 +1,4 @@
 
-
-
-
-
-
 // -------- frontend ---------
 // npm i vue nuxt
 // npm i @nuxtjs/vuetify vuetify 
@@ -17,7 +12,6 @@
 // npm outdated
 // npm update
 // npm audit fix // 취약점 고치기
-
 
 
 

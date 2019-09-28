@@ -1,3 +1,5 @@
+import Vue from 'vue';
+import throttle from 'lodash.throttle';
 
 export const state = () => ({
     mainPosts : [],
@@ -19,13 +21,14 @@ export const mutations = {
         state.mainPosts.splice( index, 1 );
     },
 
-    addComment( state, payload ){
-        const index = state.mainPosts.findIndex( v => v.id === payload.postId );
-        state.mainPosts[ index ].Comments.unshift( payload );
-    },
-
     loadComments( state, payload ){
         const index = state.mainPosts.findIndex( v => v.id === payload.postId );
+        console.log( payload.data );
+        Vue.set(state.mainPosts[index], 'Comments', payload.data);
+    },
+
+    addComment( state, payload ){
+        const index = state.mainPosts.findIndex( v => v.id === payload.PostId );
         state.mainPosts[ index ].Comments.unshift( payload );
     },
 
@@ -92,8 +95,6 @@ export const actions = {
         }).catch(( error ) => {
 
         });
-
-        
     },
 
     loadComments({ commit }, payload ){
@@ -108,17 +109,18 @@ export const actions = {
             })
     },
 
-    loadPosts({ commit, state }, payload ){
-        if( state.hasMorePost ){
-            this.$axios.get( `/posts?offset=${state.mainPosts.length}&limit=10` )
-                .then(( result ) => {
-                    commit( "loadPosts", result.data );
-                }).catch(( error ) => {
-                    console.log( "포스트 가져오기 에러" );
-                    console.error( error );
-                });
+    loadPosts : throttle( async function({ commit, state }, payload ){
+        try{
+            if( state.hasMorePost ){
+                const lastPost = state.mainPosts[ state.mainPosts.length - 1 ];
+                const result = await this.$axios.get( `/posts?lastId=${ lastPost && lastPost.id }&limit=10` );
+                commit( "loadPosts", result.data );
+                return;
+            }
+        }catch( error ){
+            console.error( error );
         }
-    },
+    }, 3000 ),
 
     uploadImages({ commit, state }, payload ){
         this.$axios.post( '/post/images', payload, {

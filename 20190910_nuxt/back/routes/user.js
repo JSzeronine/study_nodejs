@@ -9,7 +9,40 @@ const { isLoggedIn, isNotLoggedIn } = require( './middlewares' );
 router.get( "/", isLoggedIn, async ( req, res, next ) => {
     const user = req.user;
     res.json( user );
+});
+
+
+router.get( "/:id", async ( req, res, next ) => {
+    try{
+        const user = await db.User.findOne({
+            where : { id : parseInt( req.params.id, 10 )},
+            include : [{
+                model : db.Post,
+                as : "Posts",
+                attributes : [ "id" ],
+            }, {
+                model : db.User,
+                as : "Followings",
+                attributes : [ "id" ],
+            }, {
+                model : db.User,
+                as : "Followers",
+                attributes : [ "id" ]
+            }],
+
+            attributes : [ "id", "nickname" ],
+        });
+
+        console.log( user );
+
+        res.json( user );
+
+    }catch( error ){
+        console.error( error );
+        return next( error );
+    }
 })
+
 
 // 회원가입
 router.post( '/', isNotLoggedIn, async ( req, res, next ) => {
@@ -75,6 +108,9 @@ router.post( '/login', isNotLoggedIn, ( req, res, next ) => {
                 where : { id : user.id },
                 attributes : [ "id", "email", "nickname" ],
                 include : [{
+                    model : db.Post,
+                    attributes : [ "id" ]
+                }, {
                     model : db.User,
                     as : "Followings",
                     attributes : [ "id" ]
@@ -197,6 +233,22 @@ router.get( "/:id/followers", isLoggedIn, async ( req, res, next ) => {
         });
 
         res.json( followers );
+
+    }catch( error ){
+        console.error( error );
+        return next( error );
+    }
+});
+
+
+router.delete( "/:id/follower", isLoggedIn, async ( req, res, next ) => {
+    try{
+        const me = await db.User.findOne({
+            where : { id : req.user.id },
+        });
+
+        await me.removeFollower( req.params.id );
+        res.send( req.params.id );
 
     }catch( error ){
         console.error( error );

@@ -3,7 +3,7 @@
         <post-images :images="post.Images || []" />
         <v-card-title>
             <h3>
-                <nuxt-link :to="'/user/' + post.id">{{ post.User.nickname }}</nuxt-link>
+                <nuxt-link :to="'/user/' + post.User.id">{{ post.User.nickname }}</nuxt-link>
                 <v-btn v-if="canFollow" @click="onFollow">팔로우</v-btn>
                 <v-btn v-if="canUnFollow" @click="onUnFollow">언팔로우</v-btn>
             </h3>   
@@ -46,6 +46,10 @@ export default {
     },
 
     methods: {
+        clickHandler(){
+            console.log( this.post );
+        },
+
         onFollow(){
             this.$store.dispatch( "users/follow", {
                 userId : this.post.User.id

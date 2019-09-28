@@ -6,10 +6,7 @@ export const state = () => ({
     hasMoreFollower : true,
 });
 
-const totalFollowers = 8;
-const totalFollowings = 6;
 const limit = 3;
-
 export const mutations = {
     setMe( state, payload ){
         console.log( "setMe ------------> ", payload );
@@ -24,18 +21,22 @@ export const mutations = {
         state.followerList.push( payload );
     },
 
-    removeFollower( state, payload ){
-        const index = state.followerList.findIndex(( v ) => v.id === payload.id );
-        state.followerList.splice( index, 1 );
-    },
-
     addFollowing( state, payload ){
         state.followingList.push( payload );
     },
 
+    removeFollower( state, payload ){
+        let index = state.me.Followers.findIndex(( v ) => v.id === payload.id );
+        state.me.Followers.splice( index, 1 );
+        index = state.followerList.findIndex( v => v.id === payload.userId );
+        state.followerList.splice( index, 1)
+    },
+
     removeFollowing( state, payload ){
-        const index = state.me.Followings.findIndex(( v ) => v.id === payload.userid );
+        let index = state.me.Followings.findIndex(( v ) => v.id === payload.userid );
         state.me.Followings.splice( index, 1 );
+        index = state.followingList.findIndex( v => v.id === payload.userId );
+        state.followingList.splice( index, 1)
     },
 
     loadFollowings( state, payload ){
@@ -72,7 +73,7 @@ export const actions = {
 
         }catch( error ){
             console.log( "유저 없음." );
-            // console.error( error );
+            console.error( error );
         }
     },
 
@@ -150,16 +151,6 @@ export const actions = {
         commit( "addFollower", payload );
     },
 
-    removeFollowing({ commit }, payload )
-    {
-        commit( "removeFollowing", payload );
-    },
-
-    removeFollower({ commit }, payload )
-    {
-        commit( "removeFollower", payload );
-    },
-
     loadFollowers({ commit, state }, payload ){
         if( !( payload && payload.offset === 0 ) && !state.hasMoreFollower ){
             return;
@@ -205,7 +196,7 @@ export const actions = {
     },
 
     follow({ commit, state }, payload ){
-        this.$axios.post( `/user/${ payload.userId }/follow`, {
+        return this.$axios.post( `/user/${ payload.userId }/follow`, {
 
         }, {
             withCredentials : true
@@ -220,12 +211,24 @@ export const actions = {
 
     unfollow({ commit, state }, payload ){
         // delete 는 두번째 데이터가 없다.( 넣으면 동작하지 않는다. )
-        this.$axios.delete( `/user/${ payload.userId }/follow`, {
+        return this.$axios.delete( `/user/${ payload.userId }/follow`, {
             withCredentials : true
         }).then(( result ) => {
             commit( "removeFollowing", {
                 userId : payload.userId
             })
+        }).catch(( error ) => {
+            console.error( error );
+        });
+    },
+
+    removeFollower({ commit, state }, payload ){
+        return this.$axios.delete( `/user/${ payload.userId }/follower`, {
+            withCredentials : true
+        }).then(( result ) => {
+            commit( "removeFollower", {
+                userId : payload.userId
+            });
         }).catch(( error ) => {
             console.error( error );
         })

@@ -21,7 +21,7 @@
                 <v-container>
                     <v-subheader>팔로잉</v-subheader>
                     <FollowList :users="followinglist" :remove="removeFollowing" />
-                    <v-btn @click="loadMoreFollowings" v-if="hasMoreFollowing" dark color="blue" style="width:100%;">더보기</v-btn>
+                    <v-btn v-if="hasMoreFollowing" dark color="blue" style="width:100%;" @click="loadMoreFollowings">더보기</v-btn>
                 </v-container>
             </v-card>
 
@@ -29,7 +29,7 @@
                 <v-container>
                     <v-subheader>팔로워</v-subheader>
                     <FollowList :users="followerList" :remove="removeFollower" />
-                    <v-btn @click="loadMoreFollwers" v-if="hasMoreFollower" dark color="blue" style="width:100%;">더보기</v-btn>
+                    <v-btn v-if="hasMoreFollower" dark color="blue" style="width:100%;" @click="loadMoreFollwers">더보기</v-btn>
                 </v-container>
             </v-card>
         </v-container>
@@ -85,15 +85,14 @@ export default {
             })
         },
 
-        removeFollower( id )
+        removeFollowing( userId )
         {
-            this.$store.dispatch( "users/removeFollower", { id });
+            this.$store.dispatch( "users/unfollow", { userId });
         },
 
-        removeFollowing( id )
+        removeFollower( userId )
         {
-            this.$store.dispatch( "users/removeFollowing", { id });
-            
+            this.$store.dispatch( "users/removeFollower", { userId });
         },
 
         loadMoreFollowings()
