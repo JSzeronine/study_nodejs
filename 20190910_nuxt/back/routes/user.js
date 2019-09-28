@@ -41,7 +41,6 @@ router.post( '/', isNotLoggedIn, async ( req, res, next ) => {
         // 201 성공적으로 생성됐다.
         // HTTP  STATUS CODE 검색해봐.
         return res.status( 201 ).json( newUser );
-
         
     }catch( error ){
         console.error( error );
@@ -72,7 +71,21 @@ router.post( '/login', isNotLoggedIn, ( req, res, next ) => {
                 return next( err );
             }
 
-            return res.json( user );
+            const fullUser = await db.User.findOne({
+                where : { id : user.id },
+                attributes : [ "id", "email", "nickname" ],
+                include : [{
+                    model : db.User,
+                    as : "Followings",
+                    attributes : [ "id" ]
+                }, {
+                    model : db.User,
+                    as : "Followers",
+                    attributes : [ "id" ],
+                }]
+            })
+
+            return res.json( fullUser );
         });
 
         
@@ -87,5 +100,108 @@ router.post( '/logout', isLoggedIn, ( req, res ) => {
         return res.status( 200 ).send( '로그아웃 되었습니다.' );
     }
 });
+
+// 팔로우
+router.post( '/:id/follow', isLoggedIn, async ( req, res, next ) => {
+
+    try{
+
+        const me = await db.User.findOne({
+            where : {
+                id : req.user.id
+            }
+        });
+
+        await me.addFollowing( req.params.id );
+        res.send( req.params.id );
+
+    }catch( error ){
+        console.error( error );
+        return next( error );
+    }
+    
+})
+
+// 팔로우 끊기
+router.delete( '/:id/follow', isLoggedIn, async ( req, res, next ) => {
+
+    try{
+
+        const me = await db.User.findOne({
+            where : {
+                id : req.user.id
+            }
+        });
+
+        await me.removeFollowing( req.params.id );
+        res.send( req.params.id );
+
+    }catch( error ){
+        console.error( error );
+        return next( error );
+    }
+    
+});
+
+// 닉네임 변경
+router.patch( '/nickname', isLoggedIn, async ( req, res, next ) => {
+
+    try{
+
+        await db.User.update({
+            nickname : req.body.nickname
+        }, {
+            where : {
+                id : req.user.id
+            }
+        });
+        
+        res.send( req.body.nickname );
+
+    }catch( error ){
+        console.error( error );
+        return next( error );
+    }
+});
+
+router.get( '/:id/followings', isLoggedIn, async ( req, res, next ) => {
+    try{
+        const user = await db.User.findOne({
+            where : { id : req.user.id },
+        });
+
+        const followings = await user.getFollowings({
+            attributes : [ "id", "nickname" ],
+            limit : parseInt( req.query.limit || 3, 10 ),
+            offset : parseInt( req.query.offset || 0, 10 ),
+        });
+
+        res.json( followings );
+
+    }catch( err ){
+        console.error( err );
+        return next( err );
+    }
+});
+
+router.get( "/:id/followers", isLoggedIn, async ( req, res, next ) => {
+    try{
+        const user = await db.User.findOne({
+            where : { id : req.user.id },
+        });
+
+        const followers = await user.getFollowers({
+            attributes : [ "id", "nickname" ],
+            limit : parseInt( req.query.limit || 3, 10 ),
+            offset : parseInt( req.query.offset || 0, 10 )
+        });
+
+        res.json( followers );
+
+    }catch( error ){
+        console.error( error );
+        return next( error );
+    }
+})
 
 module.exports = router;

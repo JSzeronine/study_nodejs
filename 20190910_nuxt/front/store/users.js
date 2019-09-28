@@ -11,53 +11,56 @@ const totalFollowings = 6;
 const limit = 3;
 
 export const mutations = {
-    setMe( state, payLoad ){
-        state.me = payLoad;
+    setMe( state, payload ){
+        console.log( "setMe ------------> ", payload );
+        state.me = payload;
     },
 
-    changeNickname( state, payLoad ){
-        state.me.nickname = payLoad.nickname;
+    changeNickname( state, payload ){
+        state.me.nickname = payload.nickname;
     },
 
-    addFollower( state, payLoad ){
-        state.followerList.push( payLoad );
+    addFollower( state, payload ){
+        state.followerList.push( payload );
     },
 
-    removeFollower( state, payLoad ){
-        const index = state.followerList.findIndex(( v ) => v.id === payLoad.id );
+    removeFollower( state, payload ){
+        const index = state.followerList.findIndex(( v ) => v.id === payload.id );
         state.followerList.splice( index, 1 );
     },
 
-    addFollowing( state, payLoad ){
-        state.followingList.push( payLoad );
+    addFollowing( state, payload ){
+        state.followingList.push( payload );
     },
 
-    removeFollowing( state, payLoad ){
-        const index = state.followingList.findIndex(( v ) => v.id === payLoad.id );
-        state.followingList.splice( index, 1 );
+    removeFollowing( state, payload ){
+        const index = state.me.Followings.findIndex(( v ) => v.id === payload.userid );
+        state.me.Followings.splice( index, 1 );
     },
 
-    loadFollowings( state ){
-        const diff = totalFollowings - state.followingList.length;
-        const fakeUsers = Array( diff > limit ? limit : diff ).fill().map( v => ({
-            id : Math.random().toString(),
-            nickname : Math.floor( Math.random() * 1000 ),
-        }));
-
-        state.followingList = state.followingList.concat( fakeUsers );
-        state.hasMoreFollowing = fakeUsers.length === limit;
+    loadFollowings( state, payload ){
+        if( payload.offset === 0 ){
+            state.followingList = payload.data;
+        }else{
+            state.followingList = state.followingList.concat( payload.data );
+        }
+        
+        state.hasMoreFollowing = payload.data.length === limit;
     },
 
-    loadFollowers( state ){
-        const diff = totalFollowers - state.followerList.length;
-        const fakeUsers = Array( diff > limit ? limit : diff ).fill().map( v => ({
-            id : Math.random().toString(),
-            nickname : Math.floor( Math.random() * 1000 ),
-        }));
+    loadFollowers( state, payload ){
+        if( payload.offset === 0 ){
+            state.followerList = payload.data;
+        }else{
+            state.followerList = state.followerList.concat( payload.data );
+        }
+        
+        state.hasMoreFollower = payload.data.length === limit;
+    },
 
-        state.followerList = state.followerList.concat( fakeUsers );
-        state.hasMoreFollower = fakeUsers.length === limit;
-    }
+    following( state, payload ){
+        state.me.Followings.push({ id : payload.userId });
+    },
 };
 
 export const actions = {
@@ -73,39 +76,39 @@ export const actions = {
         }
     },
 
-    signUp({ commit }, payLoad ){
+    signUp({ commit }, payload ){
 
         // 서버에 회원가입 요청을 보내는 부분
         this.$axios.post( '/user', {
-            email : payLoad.email,
-            nickname : payLoad.nickname,
-            password : payLoad.password
+            email : payload.email,
+            nickname : payload.nickname,
+            password : payload.password
         }, {
             withCredentials : true, // 다른 서버간에 쿠키 심어줄때
         }).then(( result ) => {
-            console.log( "회원가입 ------> ", result );
-            commit( "setMe", payLoad );
+            // commit( "setMe", payload );
         }).catch(( err ) => {
             console.error( err );
         })
     },
 
-    logIn( { commit }, payLoad ){
-        this.$axios.post( '/user/login', {
-            email : payLoad.email,
-            password : payLoad.password
-        }, {
-            withCredentials : true, // 다른 서버간에 쿠키 심어줄때
-        }).then(( result ) => {
-            console.log( "로그인 ------->", result );
-            commit( "setMe", result.data );
-        }).catch(( err ) => {
-            console.error( err );
+    logIn( { commit }, payload ){
+        return new Promise(( resolve, reject ) => {
+            this.$axios.post( '/user/login', {
+                email : payload.email,
+                password : payload.password
+            }, {
+                withCredentials : true, // 다른 서버간에 쿠키 심어줄때
+            }).then(( result ) => {
+                commit( "setMe", result.data );
+                resolve();
+            }).catch(( err ) => {
+                console.error( err );
+            })
         })
     },
 
-    logOut( { commit }, payLoad ){
-
+    logOut( { commit }, payload ){
         return new Promise(( resolve, reject ) => {
             this.$axios.post( '/user/logout', {
 
@@ -125,40 +128,107 @@ export const actions = {
 
     },
 
-    changeNickname({ commit }, payLoad )
+    changeNickname({ commit }, payload )
     {
-        commit( "changeNickname", payLoad );
+        this.$axios.patch( "/user/nickname", {
+            nickname : payload.nickname
+        }, {
+            withCredentials : true
+        }).then(( result ) => {
+            commit( "changeNickname", payload );
+        }).catch(( error ) => {
+            console.error( error );
+        });
     },
 
-    addFollowing({ commit }, payLoad ){
-        commit( "addFollowing", payLoad );
+    addFollowing({ commit }, payload ){
+        commit( "addFollowing", payload );
     },
 
-    addFollower({ commit }, payLoad )
+    addFollower({ commit }, payload )
     {
-        commit( "addFollower", payLoad );
+        commit( "addFollower", payload );
     },
 
-    removeFollowing({ commit }, payLoad )
+    removeFollowing({ commit }, payload )
     {
-        commit( "removeFollowing", payLoad );
+        commit( "removeFollowing", payload );
     },
 
-    removeFollower({ commit }, payLoad )
+    removeFollower({ commit }, payload )
     {
-        commit( "removeFollower", payLoad );
+        commit( "removeFollower", payload );
     },
 
-    loadFollowers({ commit, state }, payLoad ){
-        if( state.hasMoreFollower ){
-            commit( "loadFollowers" );
+    loadFollowers({ commit, state }, payload ){
+        if( !( payload && payload.offset === 0 ) && !state.hasMoreFollower ){
+            return;
         }
+
+        let offset = state.followerList.length;
+        if( payload && payload.offset === 0 ){
+            offset = 0;
+        }
+
+        return this.$axios.get( `/user/${ state.me.id }/followers?limit=3&offset=${ offset }`, {
+            withCredentials : true
+        }).then(( result ) => {
+                commit( "loadFollowers", {
+                    data : result.data,
+                    offset,
+                });
+            }).catch(( error ) => {
+                console.error( error );
+            });
     },
 
-    loadFollowings({ commit, state }, payLoad ){
-        if( state.hasMoreFollowing ){
-            commit( "loadFollowings" )
+    loadFollowings({ commit, state }, payload ){
+        if( !( payload && payload.offset === 0 ) && !state.hasMoreFollowing ){
+            return;
         }
+
+        let offset = state.followingList.length;
+        if( payload && payload.offset === 0 ){
+            offset = 0;
+        }
+
+        return this.$axios.get( `/user/${ state.me.id }/followings?limit=3&offset=${ offset }`, {
+            withCredentials : true
+        }).then(( result ) => {
+                commit( "loadFollowings", {
+                    data : result.data,
+                    offset,
+                });
+            }).catch(( error ) => {
+                console.error( error );
+            });
+    },
+
+    follow({ commit, state }, payload ){
+        this.$axios.post( `/user/${ payload.userId }/follow`, {
+
+        }, {
+            withCredentials : true
+        }).then(( result ) => {
+            commit( "following", {
+                userId : payload.userId
+            });
+        }).catch(( error ) => {
+            console.error( error );
+        })
+    },
+
+    unfollow({ commit, state }, payload ){
+        // delete 는 두번째 데이터가 없다.( 넣으면 동작하지 않는다. )
+        this.$axios.delete( `/user/${ payload.userId }/follow`, {
+            withCredentials : true
+        }).then(( result ) => {
+            commit( "removeFollowing", {
+                userId : payload.userId
+            })
+        }).catch(( error ) => {
+            console.error( error );
+        })
     }
 };
 
