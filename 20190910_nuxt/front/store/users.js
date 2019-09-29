@@ -4,6 +4,7 @@ export const state = () => ({
     followingList : [],
     hasMoreFollowing : true,
     hasMoreFollower : true,
+    other : null, // 남에 정보
 });
 
 const limit = 3;
@@ -11,6 +12,10 @@ export const mutations = {
     setMe( state, payload ){
         console.log( "setMe ------------> ", payload );
         state.me = payload;
+    },
+
+    setOther( state, payload ){
+        state.other = payload;
     },
 
     changeNickname( state, payload ){
@@ -70,6 +75,17 @@ export const actions = {
         try{
             const result = await this.$axios.get( "/user", { withCredentials : true });
             commit( "setMe", result.data );
+
+        }catch( error ){
+            console.log( "유저 없음." );
+            console.error( error );
+        }
+    },
+
+    async loadOther({ commit }, payload ){
+        try{
+            const result = await this.$axios.get( `/user/${ payload.userId }`, { withCredentials : true });
+            commit( "setOther", result.data );
 
         }catch( error ){
             console.log( "유저 없음." );
@@ -232,7 +248,9 @@ export const actions = {
         }).catch(( error ) => {
             console.error( error );
         })
-    }
+    },
+
+
 };
 
 

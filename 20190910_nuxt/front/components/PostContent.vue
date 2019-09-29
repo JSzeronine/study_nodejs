@@ -1,6 +1,6 @@
 <template>
     <div>
-        <post-images :images="post.Images || []" />
+        <PostImage :images="post.Images || []" />
         <v-card-title>
             <h3>
                 <nuxt-link :to="'/user/' + post.User.id">{{ post.User.nickname }}</nuxt-link>
@@ -10,7 +10,10 @@
         </v-card-title>
         <v-card-text>
             <div>
-                <div>{{ post.content }}</div>
+                <template v-for="( node, i ) in nodes">
+                    <nuxt-link v-if="node.startsWith( '#' )" :key="i" :to="`/hashtag/${node.slice(1)}`">{{ node }}</nuxt-link>
+                    <template v-else>{{ node }}</template>
+                </template>
             </div>
         </v-card-text>
     </div>
@@ -32,6 +35,10 @@ export default {
     },
 
     computed: {
+        nodes(){
+            return this.post.content.split(/(#[^\s#]+)/);
+        },
+
         me(){
             return this.$store.state.users.me;
         },

@@ -11,9 +11,11 @@ router.get( "/", isLoggedIn, async ( req, res, next ) => {
     res.json( user );
 });
 
-
 router.get( "/:id", async ( req, res, next ) => {
     try{
+
+        console.log( "-------------> ", req.params.id );
+
         const user = await db.User.findOne({
             where : { id : parseInt( req.params.id, 10 )},
             include : [{
@@ -23,17 +25,15 @@ router.get( "/:id", async ( req, res, next ) => {
             }, {
                 model : db.User,
                 as : "Followings",
-                attributes : [ "id" ],
+                attributes : [ "id" ]
             }, {
                 model : db.User,
                 as : "Followers",
                 attributes : [ "id" ]
             }],
 
-            attributes : [ "id", "nickname" ],
+            attributes : [ "id", "nickname" ]
         });
-
-        console.log( user );
 
         res.json( user );
 
@@ -134,6 +134,40 @@ router.post( '/logout', isLoggedIn, ( req, res ) => {
         req.logout();
         req.session.destroy();
         return res.status( 200 ).send( '로그아웃 되었습니다.' );
+    }
+});
+
+router.get( "/:id/posts/", async ( req, res, next ) => {
+    try{
+
+        let where = {
+            UserId: parseInt(req.params.id, 10),
+            RetweetId: null,
+          };
+          if (parseInt(req.query.lastId, 10)) {
+            where[db.Sequelize.Op.lt] = parseInt(req.query.lastId, 10);
+          }
+
+        const posts = await db.Post.findAll({
+            where,
+            include : [{
+                model : db.User,
+                attributes : [ "id", "nickname" ],
+            }, {
+                model : db.Image,
+            }, {
+                model : db.User,
+                througt : "Like",
+                as : "Likers",
+                attributes : [ "id" ],
+            }],
+        });
+
+        res.json( posts );
+        
+    }catch( error ){
+        console.error( error );
+        return next( error );
     }
 });
 
