@@ -8,38 +8,39 @@
 
 <script>
 import PostCard from '~/components/PostCard';
-import PostForm from '~/components/PostForm';
 
 export default {
+
+    data() {
+        return {
+            
+        }
+    },
 
     components : {
         PostCard,
     },
 
     computed: {
-        me(){
-            return this.$store.state.users.me;
+        other(){
+            return this.$store.state.users.other;
         },
 
         mainPosts(){
             return this.$store.state.posts.mainPosts;
         },
-
-        hasMorePost(){
-            return this.$store.state.posts.hasMorePost;
-        }
     },
 
-    fetch({ store }){
-        return store.dispatch( "posts/loadPosts" );
-    },
-
-    created() {
-        
+    fetch({ store, params }){
+        return store.dispatch( "posts/loadHashtagPosts", {
+            hashtag : encodeURIComponent( params.id ),
+            reset : true,
+        });
     },
 
     mounted() {
         window.addEventListener( "scroll", this.onScroll );
+        this.onScroll( null );
     },
 
     beforeDestroy() {
